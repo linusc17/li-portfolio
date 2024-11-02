@@ -10,6 +10,7 @@ import {
   Github,
   Phone,
   Mail,
+  Linkedin,
 } from "lucide-react";
 import {
   SiJavascript,
@@ -125,6 +126,12 @@ export default function Home() {
               <a href="https://github.com/linusc17" className="p-2">
                 <Github className="h-6 w-6 sm:h-8 sm:w-8" />
                 <span className="sr-only">GitHub</span>
+              </a>
+            </Button>
+            <Button variant="ghost" size="lg" asChild>
+              <a href="https://www.linkedin.com/in/linuscypn/" className="p-2">
+                <Linkedin className="h-6 w-6 sm:h-8 sm:w-8" />
+                <span className="sr-only">LinkedIn</span>
               </a>
             </Button>
           </div>
