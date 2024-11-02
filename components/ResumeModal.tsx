@@ -135,7 +135,7 @@ export default function ResumeModal({
                 Bachelor of Science in Information Technology
               </p>
               <p className="text-sm text-muted-foreground pb-2">
-                Consistent Dean's/President's Lister
+                Consistent Dean&apos;s/President&apos;s Lister
               </p>
               <h4 className="font-medium">FEU Alabang</h4>
               <p className="text-sm text-muted-foreground">
