@@ -10,7 +10,7 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Vincent Linus A. Caayupan - Portfolio",
+  title: "Li's Portfolio",
   description: "Front-end Web Developer Portfolio",
 };
 
