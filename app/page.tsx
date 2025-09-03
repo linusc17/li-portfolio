@@ -252,14 +252,11 @@ export default function Home() {
               <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Toggle theme</span>
             </Switch>
-            <Button variant="outline" onClick={() => setShowResumeModal(true)}>
-              Resume
-            </Button>
           </div>
         </nav>
 
         <div className="fade-in fade-out relative mx-auto rounded-full w-60 sm:w-80 h-60 sm:h-80 overflow-hidden animate-float hover-tilt">
-          <Image src="/me.png" alt="Profile" layout="fill" objectFit="cover" />
+          <Image src="/me.png" alt="Profile" fill className="object-cover" />
         </div>
 
         <div className="text-center p-5 sm:p-10">
@@ -434,9 +431,8 @@ export default function Home() {
                           <Image
                             src={project.image}
                             alt={project.name}
-                            layout="fill"
-                            objectFit="cover"
-                            className="transform group-hover:scale-110 transition-transform duration-500"
+                            fill
+                            className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                             onError={(e) => {
                               const parent = e.currentTarget.parentElement;
                               if (parent) {
