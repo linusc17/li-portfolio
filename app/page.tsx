@@ -511,7 +511,7 @@ export default function Home() {
               </a>
             </Button>
             <Button variant="ghost" size="lg" asChild>
-              <a href="https://www.instagram.com/linuscypn_/" className="p-2">
+              <a href="https://www.instagram.com/lns.ai/" className="p-2">
                 <Instagram className="h-6 w-6 sm:h-8 sm:w-8" />
                 <span className="sr-only">Instagram</span>
               </a>
