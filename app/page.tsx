@@ -788,11 +788,10 @@ export default function Home() {
                     },
                   ].map((item, index) => (
                     <div key={index} className="fade-in fade-out relative">
-                      {/* Timeline dot */}
-                      <div className="absolute left-6 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background z-10"></div>
-
                       {/* Content card */}
-                      <div className="ml-16">
+                      <div className="ml-16 relative">
+                        {/* Timeline dot - positioned to center with the card */}
+                        <div className="absolute -left-10 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background z-10"></div>
                         <Card className="hover-lift group">
                           <CardContent className="p-6 text-center md:text-left">
                             <div className="flex flex-col items-center md:flex-row md:items-center md:justify-between mb-3">
