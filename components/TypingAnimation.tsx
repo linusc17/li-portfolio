@@ -6,7 +6,7 @@ const TypingAnimation = () => {
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const fullText =
-    "Passionate about creating responsive and user-friendly web applications.";
+    "Building scalable full-stack applications with modern technologies and real-time features.";
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
