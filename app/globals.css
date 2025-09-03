@@ -4,33 +4,40 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Warm off-white background instead of harsh white */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 27%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Subtle card backgrounds with gentle elevation */
+    --card: 210 25% 97%;
+    --card-foreground: 215 25% 27%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 25% 97%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 222.2 47.4% 11.2%;
+    /* Softer primary color - professional blue-gray */
+    --primary: 215 30% 35%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Gentle secondary colors */
+    --secondary: 210 30% 92%;
+    --secondary-foreground: 215 25% 35%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted colors for less important content */
+    --muted: 210 25% 94%;
+    --muted-foreground: 215 15% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Subtle accent colors */
+    --accent: 210 25% 93%;
+    --accent-foreground: 215 25% 35%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Softer borders and inputs */
+    --border: 215 20% 88%;
+    --input: 215 20% 90%;
+    --ring: 215 30% 35%;
 
     --radius: 0.5rem;
   }

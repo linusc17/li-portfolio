@@ -44,18 +44,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 
 import TypingAnimation from "../components/TypingAnimation";
-import ResumeModal from "../components/ResumeModal";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
-  const [showResumeModal, setShowResumeModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAllSkills, setShowAllSkills] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
-    message: ""
+    message: "",
   });
+
+  const handleResumeRequest = () => {
+    setContactForm({
+      name: "",
+      email: "",
+      message: "Hi Vincent! I'd like to request your full resume for a position I'm considering you for. Could you please send it over? Thank you!",
+    });
+    // Scroll to contact form
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
 
@@ -84,7 +92,7 @@ export default function Home() {
   useEffect(() => {
     // Reset showAllSkills when category changes
     setShowAllSkills(false);
-    
+
     const timer = setTimeout(() => {
       const elements = document.querySelectorAll(".fade-in");
       elements.forEach((element) => {
@@ -127,78 +135,280 @@ export default function Home() {
 
   const skillCategories = {
     All: [
-      { Icon: SiJavascript, name: "JavaScript", description: "Programming language for web development" },
-      { Icon: SiTypescript, name: "TypeScript", description: "Typed superset of JavaScript for scalable applications" },
-      { Icon: SiReact, name: "React", description: "JavaScript library for building user interfaces" },
-      { Icon: SiNextdotjs, name: "Next.js", description: "React framework for production" },
-      { Icon: SiNodedotjs, name: "Node.js", description: "JavaScript runtime for server-side development" },
-      { Icon: SiExpress, name: "Express.js", description: "Web application framework for Node.js" },
-      { Icon: SiSocketdotio, name: "Socket.io", description: "Real-time bidirectional event-based communication" },
-      { Icon: SiPrisma, name: "Prisma", description: "Next-generation ORM for Node.js and TypeScript" },
-      { Icon: SiMongodb, name: "MongoDB", description: "NoSQL database for modern applications" },
-      { Icon: SiFirebase, name: "Firebase", description: "Google's app development platform" },
-      { Icon: SiSupabase, name: "Supabase", description: "Open source Firebase alternative" },
-      { Icon: SiTailwindcss, name: "Tailwind CSS", description: "Utility-first CSS framework" },
-      { Icon: SiSass, name: "SCSS", description: "CSS preprocessor with enhanced features" },
-      { Icon: SiBootstrap, name: "Bootstrap", description: "Front-end framework for responsive design" },
-      { Icon: SiGit, name: "Git", description: "Version control system for tracking code changes" },
-      { Icon: SiGithub, name: "GitHub", description: "Code hosting platform for version control and collaboration" },
-      { Icon: SiVisualstudiocode, name: "VS Code", description: "Lightweight code editor with powerful features" },
-      { Icon: SiPostman, name: "Postman", description: "API development and testing platform" },
-      { Icon: SiFigma, name: "Figma", description: "Collaborative interface design tool" },
-      { Icon: SiCanva, name: "Canva", description: "Graphic design platform for visual content" },
-      { Icon: SiSlack, name: "Slack", description: "Team communication and collaboration platform" },
-      { Icon: SiNpm, name: "npm", description: "Package manager for JavaScript and Node.js" },
-      { Icon: SiAnthropic, name: "Claude Code", description: "AI-powered development environment and coding assistant" },
-      { Icon: SiOpenai, name: "ChatGPT", description: "AI assistant for code generation and problem solving" },
+      {
+        Icon: SiJavascript,
+        name: "JavaScript",
+        description: "Programming language for web development",
+      },
+      {
+        Icon: SiTypescript,
+        name: "TypeScript",
+        description: "Typed superset of JavaScript for scalable applications",
+      },
+      {
+        Icon: SiReact,
+        name: "React",
+        description: "JavaScript library for building user interfaces",
+      },
+      {
+        Icon: SiNextdotjs,
+        name: "Next.js",
+        description: "React framework for production",
+      },
+      {
+        Icon: SiNodedotjs,
+        name: "Node.js",
+        description: "JavaScript runtime for server-side development",
+      },
+      {
+        Icon: SiExpress,
+        name: "Express.js",
+        description: "Web application framework for Node.js",
+      },
+      {
+        Icon: SiSocketdotio,
+        name: "Socket.io",
+        description: "Real-time bidirectional event-based communication",
+      },
+      {
+        Icon: SiPrisma,
+        name: "Prisma",
+        description: "Next-generation ORM for Node.js and TypeScript",
+      },
+      {
+        Icon: SiMongodb,
+        name: "MongoDB",
+        description: "NoSQL database for modern applications",
+      },
+      {
+        Icon: SiFirebase,
+        name: "Firebase",
+        description: "Google's app development platform",
+      },
+      {
+        Icon: SiSupabase,
+        name: "Supabase",
+        description: "Open source Firebase alternative",
+      },
+      {
+        Icon: SiTailwindcss,
+        name: "Tailwind CSS",
+        description: "Utility-first CSS framework",
+      },
+      {
+        Icon: SiSass,
+        name: "SCSS",
+        description: "CSS preprocessor with enhanced features",
+      },
+      {
+        Icon: SiBootstrap,
+        name: "Bootstrap",
+        description: "Front-end framework for responsive design",
+      },
+      {
+        Icon: SiGit,
+        name: "Git",
+        description: "Version control system for tracking code changes",
+      },
+      {
+        Icon: SiGithub,
+        name: "GitHub",
+        description:
+          "Code hosting platform for version control and collaboration",
+      },
+      {
+        Icon: SiVisualstudiocode,
+        name: "VS Code",
+        description: "Lightweight code editor with powerful features",
+      },
+      {
+        Icon: SiPostman,
+        name: "Postman",
+        description: "API development and testing platform",
+      },
+      {
+        Icon: SiFigma,
+        name: "Figma",
+        description: "Collaborative interface design tool",
+      },
+      {
+        Icon: SiCanva,
+        name: "Canva",
+        description: "Graphic design platform for visual content",
+      },
+      {
+        Icon: SiSlack,
+        name: "Slack",
+        description: "Team communication and collaboration platform",
+      },
+      {
+        Icon: SiNpm,
+        name: "npm",
+        description: "Package manager for JavaScript and Node.js",
+      },
+      {
+        Icon: SiAnthropic,
+        name: "Claude Code",
+        description: "AI-powered development environment and coding assistant",
+      },
+      {
+        Icon: SiOpenai,
+        name: "ChatGPT",
+        description: "AI assistant for code generation and problem solving",
+      },
     ],
     Frontend: [
-      { Icon: SiReact, name: "React", description: "JavaScript library for building user interfaces" },
-      { Icon: SiNextdotjs, name: "Next.js", description: "React framework for production" },
-      { Icon: SiTailwindcss, name: "Tailwind CSS", description: "Utility-first CSS framework" },
-      { Icon: SiSass, name: "SCSS", description: "CSS preprocessor with enhanced features" },
-      { Icon: SiBootstrap, name: "Bootstrap", description: "Front-end framework for responsive design" },
+      {
+        Icon: SiReact,
+        name: "React",
+        description: "JavaScript library for building user interfaces",
+      },
+      {
+        Icon: SiNextdotjs,
+        name: "Next.js",
+        description: "React framework for production",
+      },
+      {
+        Icon: SiTailwindcss,
+        name: "Tailwind CSS",
+        description: "Utility-first CSS framework",
+      },
+      {
+        Icon: SiSass,
+        name: "SCSS",
+        description: "CSS preprocessor with enhanced features",
+      },
+      {
+        Icon: SiBootstrap,
+        name: "Bootstrap",
+        description: "Front-end framework for responsive design",
+      },
     ],
     Backend: [
-      { Icon: SiNodedotjs, name: "Node.js", description: "JavaScript runtime for server-side development" },
-      { Icon: SiExpress, name: "Express.js", description: "Web application framework for Node.js" },
-      { Icon: SiSocketdotio, name: "Socket.io", description: "Real-time bidirectional event-based communication" },
-      { Icon: SiPrisma, name: "Prisma", description: "Next-generation ORM for Node.js and TypeScript" },
+      {
+        Icon: SiNodedotjs,
+        name: "Node.js",
+        description: "JavaScript runtime for server-side development",
+      },
+      {
+        Icon: SiExpress,
+        name: "Express.js",
+        description: "Web application framework for Node.js",
+      },
+      {
+        Icon: SiSocketdotio,
+        name: "Socket.io",
+        description: "Real-time bidirectional event-based communication",
+      },
+      {
+        Icon: SiPrisma,
+        name: "Prisma",
+        description: "Next-generation ORM for Node.js and TypeScript",
+      },
     ],
     Database: [
-      { Icon: SiMongodb, name: "MongoDB", description: "NoSQL database for modern applications" },
-      { Icon: SiFirebase, name: "Firebase", description: "Google's app development platform" },
-      { Icon: SiSupabase, name: "Supabase", description: "Open source Firebase alternative" },
+      {
+        Icon: SiMongodb,
+        name: "MongoDB",
+        description: "NoSQL database for modern applications",
+      },
+      {
+        Icon: SiFirebase,
+        name: "Firebase",
+        description: "Google's app development platform",
+      },
+      {
+        Icon: SiSupabase,
+        name: "Supabase",
+        description: "Open source Firebase alternative",
+      },
     ],
     Tools: [
-      { Icon: SiGit, name: "Git", description: "Version control system for tracking code changes" },
-      { Icon: SiGithub, name: "GitHub", description: "Code hosting platform for version control and collaboration" },
-      { Icon: SiVisualstudiocode, name: "VS Code", description: "Lightweight code editor with powerful features" },
-      { Icon: SiPostman, name: "Postman", description: "API development and testing platform" },
-      { Icon: SiFigma, name: "Figma", description: "Collaborative interface design tool" },
-      { Icon: SiCanva, name: "Canva", description: "Graphic design platform for visual content" },
-      { Icon: SiSlack, name: "Slack", description: "Team communication and collaboration platform" },
-      { Icon: SiNpm, name: "npm", description: "Package manager for JavaScript and Node.js" },
-      { Icon: SiAnthropic, name: "Claude Code", description: "AI-powered development environment and coding assistant" },
-      { Icon: SiOpenai, name: "ChatGPT", description: "AI assistant for code generation and problem solving" },
+      {
+        Icon: SiGit,
+        name: "Git",
+        description: "Version control system for tracking code changes",
+      },
+      {
+        Icon: SiGithub,
+        name: "GitHub",
+        description:
+          "Code hosting platform for version control and collaboration",
+      },
+      {
+        Icon: SiVisualstudiocode,
+        name: "VS Code",
+        description: "Lightweight code editor with powerful features",
+      },
+      {
+        Icon: SiPostman,
+        name: "Postman",
+        description: "API development and testing platform",
+      },
+      {
+        Icon: SiFigma,
+        name: "Figma",
+        description: "Collaborative interface design tool",
+      },
+      {
+        Icon: SiCanva,
+        name: "Canva",
+        description: "Graphic design platform for visual content",
+      },
+      {
+        Icon: SiSlack,
+        name: "Slack",
+        description: "Team communication and collaboration platform",
+      },
+      {
+        Icon: SiNpm,
+        name: "npm",
+        description: "Package manager for JavaScript and Node.js",
+      },
+      {
+        Icon: SiAnthropic,
+        name: "Claude Code",
+        description: "AI-powered development environment and coding assistant",
+      },
+      {
+        Icon: SiOpenai,
+        name: "ChatGPT",
+        description: "AI assistant for code generation and problem solving",
+      },
     ],
     Languages: [
-      { Icon: SiJavascript, name: "JavaScript", description: "Programming language for web development" },
-      { Icon: SiTypescript, name: "TypeScript", description: "Typed superset of JavaScript for scalable applications" },
-    ]
+      {
+        Icon: SiJavascript,
+        name: "JavaScript",
+        description: "Programming language for web development",
+      },
+      {
+        Icon: SiTypescript,
+        name: "TypeScript",
+        description: "Typed superset of JavaScript for scalable applications",
+      },
+    ],
   };
 
-  const allSkillsForCategory = skillCategories[selectedCategory as keyof typeof skillCategories] || skillCategories.All;
-  
+  const allSkillsForCategory =
+    skillCategories[selectedCategory as keyof typeof skillCategories] ||
+    skillCategories.All;
+
   // For "All" category, limit initial display to 12 items (3 rows on desktop, manageable on mobile)
   const initialDisplayCount = 12;
-  const shouldPaginate = selectedCategory === "All" && allSkillsForCategory.length > initialDisplayCount;
-  
-  const filteredSkills = shouldPaginate && !showAllSkills 
-    ? allSkillsForCategory.slice(0, initialDisplayCount)
-    : allSkillsForCategory;
-    
-  const hasMoreSkills = shouldPaginate && !showAllSkills && allSkillsForCategory.length > initialDisplayCount;
+  const shouldPaginate =
+    selectedCategory === "All" &&
+    allSkillsForCategory.length > initialDisplayCount;
+
+  const filteredSkills =
+    shouldPaginate && !showAllSkills
+      ? allSkillsForCategory.slice(0, initialDisplayCount)
+      : allSkillsForCategory;
+
+  const hasMoreSkills =
+    shouldPaginate &&
+    !showAllSkills &&
+    allSkillsForCategory.length > initialDisplayCount;
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -206,10 +416,10 @@ export default function Home() {
     setSubmitStatus("");
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(contactForm),
       });
@@ -217,22 +427,31 @@ export default function Home() {
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitStatus("Thank you! Your message has been sent successfully. I'll get back to you soon!");
+        setSubmitStatus(
+          "Thank you! Your message has been sent successfully. I'll get back to you soon!"
+        );
         setContactForm({ name: "", email: "", message: "" });
       } else {
-        setSubmitStatus(data.error || "Sorry, there was an error sending your message. Please try again.");
+        setSubmitStatus(
+          data.error ||
+            "Sorry, there was an error sending your message. Please try again."
+        );
       }
     } catch (error) {
-      console.error('Contact form error:', error);
-      setSubmitStatus("Sorry, there was an error sending your message. Please try contacting me directly at v.caayupan@gmail.com");
+      console.error("Contact form error:", error);
+      setSubmitStatus(
+        "Sorry, there was an error sending your message. Please try contacting me directly at v.caayupan@gmail.com"
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setContactForm(prev => ({ ...prev, [name]: value }));
+    setContactForm((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -243,6 +462,14 @@ export default function Home() {
             LINUS CAAYUPAN
           </h1>
           <div className="flex items-center space-x-2 sm:space-x-4">
+            <Button 
+              onClick={handleResumeRequest}
+              variant="outline"
+              size="sm"
+              className="hidden sm:flex transition-all duration-300 hover:scale-105"
+            >
+              Request Resume
+            </Button>
             <Switch
               checked={darkMode}
               onCheckedChange={setDarkMode}
@@ -311,7 +538,9 @@ export default function Home() {
               {Object.keys(skillCategories).map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
                   onClick={() => setSelectedCategory(category)}
                   className="text-sm transition-all duration-300 hover:scale-105"
                 >
@@ -327,7 +556,9 @@ export default function Home() {
                 >
                   <CardContent className="p-4 sm:p-6 flex flex-col items-center justify-center relative z-10 h-full min-h-[200px]">
                     <Icon className="text-5xl sm:text-6xl text-primary mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300" />
-                    <h3 className="text-lg sm:text-xl font-semibold mb-2 text-center">{name}</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2 text-center">
+                      {name}
+                    </h3>
                     <p className="text-xs sm:text-sm text-muted-foreground text-center line-clamp-3">
                       {description}
                     </p>
@@ -336,7 +567,7 @@ export default function Home() {
                 </Card>
               ))}
             </div>
-            
+
             {hasMoreSkills && (
               <div className="fade-in fade-out flex justify-center mt-8">
                 <Button
@@ -345,11 +576,12 @@ export default function Home() {
                   size="lg"
                   className="px-8 py-3 text-base transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  Show More ({allSkillsForCategory.length - initialDisplayCount} more)
+                  Show More ({allSkillsForCategory.length - initialDisplayCount}{" "}
+                  more)
                 </Button>
               </div>
             )}
-            
+
             {showAllSkills && selectedCategory === "All" && (
               <div className="fade-in fade-out flex justify-center mt-6">
                 <Button
@@ -371,52 +603,54 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {[
                 {
-                  name: "DriveMetro",
+                  name: "Piper Warrior App",
                   description:
-                    "Driver education management system with student enrollment, course tracking, and automated PDF report generation using Next.js and Supabase",
-                  tech: "Next.js • Supabase • TypeScript",
-                  image: "/project4.png",
-                },
-                {
-                  name: "ContractMaker Platform",
-                  description: "Digital contract management system for film industry with e-signature capabilities, PDF generation, and workflow automation",
-                  tech: "Next.js • Firebase • Chakra UI",
-                  image: "/project2.png",
-                },
-                {
-                  name: "Blacksite E-commerce",
-                  description: "Cinema equipment sales platform with shopping cart, inventory management, and admin dashboard",
-                  tech: "Next.js • Firebase • TailwindCSS",
-                  image: "/project1.png",
-                },
-                {
-                  name: "NUDMarket Mobile App",
-                  description: "Cross-platform e-commerce mobile application with real-time product catalog, cart functionality, and user reviews",
-                  tech: "Flutter • Dart • Supabase • GetX",
-                  image: "/project3.png",
+                    "Interactive aircraft information system for aviation training with QR code functionality and detailed component documentation",
+                  tech: "Next.js • TypeScript • QR Code",
+                  image: "/piperwarrior.png",
+                  link: "https://piperwarrior.vercel.app/",
                 },
                 {
                   name: "Homalift Corporate Site",
-                  description: "Professional elevator company website featuring interactive product showcases and project portfolio with lead generation",
-                  tech: "Next.js • TailwindCSS • Resend",
-                  image: null,
+                  description:
+                    "Professional elevator company website featuring interactive product showcases and project portfolio with lead generation forms",
+                  tech: "Next.js • Tailwind CSS • Resend",
+                  image: "/homalift.png",
+                  link: "https://homalift.vercel.app/",
+                },
+                {
+                  name: "Facilities System",
+                  description:
+                    "Comprehensive facilities management system for university use with maintenance request tracking, equipment reservation, and room booking capabilities",
+                  tech: "HTML • CSS • Tailwind CSS • PHP • MySQL",
+                  image: "/project4.png",
                 },
                 {
                   name: "Travel Agency Website",
-                  description: "Booking and reservation system for travel agency with streamlined trip management and customer portal",
+                  description:
+                    "Booking and reservation system for travel agency with streamlined trip management and customer portal using WordPress",
                   tech: "WordPress • WPTravelEngine",
-                  image: null,
+                  image: "/project2.png",
                 },
                 {
-                  name: "Piper Warrior Training App",
-                  description: "Interactive aircraft information system for aviation training with detailed component documentation and flight controls",
-                  tech: "Next.js • Supabase • TypeScript",
-                  image: null,
+                  name: "DriveMetro",
+                  description:
+                    "Driver education management system with student enrollment, course tracking, and automated PDF report generation with decision support",
+                  tech: "Next.js • Supabase • Puppeteer",
+                  image: "/project3.png",
                 },
                 {
                   name: "Emergency GPS Tracker",
-                  description: "Mobile emergency response application with real-time GPS tracking and alert system for safety management",
-                  tech: "Mobile Development • GPS Integration",
+                  description:
+                    "Mobile emergency response application with real-time GPS tracking, offline data storage, and location-based emergency services",
+                  tech: "Flutter • Hive • Geolocator • Flutter Map",
+                  image: null,
+                },
+                {
+                  name: "NUDMarket Mobile POS",
+                  description:
+                    "Cross-platform mobile e-commerce POS application with shopping cart, product reviews, and inventory management for retail operations",
+                  tech: "Flutter • Supabase • GetX",
                   image: null,
                 },
               ].map((project) => (
@@ -456,11 +690,29 @@ export default function Home() {
                             <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
                               <span className="text-2xl text-primary">📁</span>
                             </div>
-                            <p className="text-sm text-muted-foreground">Project Preview</p>
+                            <p className="text-sm text-muted-foreground">
+                              Project Preview
+                            </p>
                           </div>
                         </div>
                       )}
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      {project.link && (
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <Button
+                            asChild
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                          >
+                            <a
+                              href={project.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Visit Site
+                            </a>
+                          </Button>
+                        </div>
+                      )}
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-semibold mb-2">
@@ -487,30 +739,30 @@ export default function Home() {
               <div className="relative">
                 {/* Timeline line - positioned consistently */}
                 <div className="absolute left-6 top-0 w-1 h-full bg-primary/20"></div>
-                
+
                 <div className="space-y-8">
                   {[
                     {
-                      period: "Oct 2024 - Sept 2025",
+                      period: "Oct 2024 - Present",
                       role: "Junior Software Engineer",
                       company: "Nerve Technologies",
                       achievements: [
                         "Contributed to enterprise-level applications using MERN stack",
-                        "Implemented praised Socket.io real-time messaging features",
-                        "Collaborated on 4+ applications serving multiple business domains"
+                        "Implemented Socket.io real-time messaging features",
+                        "Collaborated on 4+ applications serving multiple business domains",
                       ],
-                      type: "work"
+                      type: "work",
                     },
                     {
                       period: "Oct 2024 - Present",
                       role: "Web Developer (Part-Time)",
                       company: "Techmaker Digital Innovations",
                       achievements: [
-                        "Developed ContractMaker platform for film industry",
+                        "Developed ContractMaker platform for contract signing app",
                         "Built Blacksite e-commerce platform for cinema equipment",
-                        "Implemented PDF generation and contract workflows"
+                        "Implemented PDF generation and contract workflows",
                       ],
-                      type: "work"
+                      type: "work",
                     },
                     {
                       period: "Mar 2024 - Jul 2024",
@@ -519,9 +771,9 @@ export default function Home() {
                       achievements: [
                         "Led team in developing travel agency booking system",
                         "Used WordPress and WPTravelEngine for backend system",
-                        "Gained experience in project leadership and team coordination"
+                        "Gained experience in project leadership and team coordination",
                       ],
-                      type: "work"
+                      type: "work",
                     },
                     {
                       period: "2021 - 2024",
@@ -530,23 +782,27 @@ export default function Home() {
                       achievements: [
                         "Consistent Dean's/President's Lister",
                         "Developed strong foundation in programming and software development",
-                        "Completed multiple academic projects and coursework"
+                        "Completed multiple academic projects and coursework",
                       ],
-                      type: "education"
-                    }
+                      type: "education",
+                    },
                   ].map((item, index) => (
                     <div key={index} className="fade-in fade-out relative">
                       {/* Timeline dot */}
                       <div className="absolute left-6 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background z-10"></div>
-                      
+
                       {/* Content card */}
                       <div className="ml-16">
                         <Card className="hover-lift group">
                           <CardContent className="p-6 text-center md:text-left">
                             <div className="flex flex-col items-center md:flex-row md:items-center md:justify-between mb-3">
                               <div className="text-center md:text-left">
-                                <h3 className="text-xl font-semibold mb-1">{item.role}</h3>
-                                <h4 className="text-lg text-primary font-medium">{item.company}</h4>
+                                <h3 className="text-xl font-semibold mb-1">
+                                  {item.role}
+                                </h3>
+                                <h4 className="text-lg text-primary font-medium">
+                                  {item.company}
+                                </h4>
                               </div>
                               <div className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full mt-2 md:mt-0">
                                 {item.period}
@@ -556,7 +812,9 @@ export default function Home() {
                               {item.achievements.map((achievement, i) => (
                                 <div key={i} className="flex items-start gap-2">
                                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                                  <span className="leading-relaxed text-left">{achievement}</span>
+                                  <span className="leading-relaxed text-left">
+                                    {achievement}
+                                  </span>
                                 </div>
                               ))}
                             </div>
@@ -570,7 +828,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center my-20 sm:mt-20">
+          <div id="contact-form" className="text-center my-20 sm:mt-20">
             <h2 className="fade-in fade-out text-4xl sm:text-6xl py-4 sm:py-8 text-primary font-medium">
               Get in Touch
             </h2>
@@ -589,13 +847,16 @@ export default function Home() {
                   </span>
                 </div>
               </div>
-              
+
               <Card className="fade-in fade-out hover-lift">
                 <CardContent className="p-8">
                   <form onSubmit={handleContactSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium mb-2">
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium mb-2"
+                        >
                           Name *
                         </label>
                         <input
@@ -610,7 +871,10 @@ export default function Home() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium mb-2">
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium mb-2"
+                        >
                           Email *
                         </label>
                         <input
@@ -626,7 +890,10 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Message *
                       </label>
                       <textarea
@@ -641,8 +908,8 @@ export default function Home() {
                       />
                     </div>
                     <div className="text-center">
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         disabled={isSubmitting}
                         className="px-8 py-3 text-lg transition-all duration-300 hover:scale-105 disabled:opacity-50"
                       >
@@ -650,7 +917,13 @@ export default function Home() {
                       </Button>
                     </div>
                     {submitStatus && (
-                      <div className={`text-center text-sm mt-4 ${submitStatus.includes("Thank you") ? "text-green-600" : "text-red-600"}`}>
+                      <div
+                        className={`text-center text-sm mt-4 ${
+                          submitStatus.includes("Thank you")
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
                         {submitStatus}
                       </div>
                     )}
@@ -661,10 +934,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <ResumeModal
-        showModal={showResumeModal}
-        setShowModal={setShowResumeModal}
-      />
     </div>
   );
 }
