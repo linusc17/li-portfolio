@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "Vincent Linus Caayupan Portfolio",
     images: [
       {
-        url: "/me.png",
+        url: "/me.jpg",
         width: 1200,
         height: 630,
         alt: "Vincent Linus Caayupan - Full-Stack Developer",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vincent Linus Caayupan | Full-Stack Developer",
     description: "Passionate Full-Stack Developer specializing in MERN stack, React, Next.js, and mobile development.",
-    images: ["/me.png"],
+    images: ["/me.jpg"],
   },
   robots: {
     index: true,

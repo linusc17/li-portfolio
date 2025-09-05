@@ -483,7 +483,7 @@ export default function Home() {
         </nav>
 
         <div className="fade-in fade-out relative mx-auto rounded-full w-60 sm:w-80 h-60 sm:h-80 overflow-hidden animate-float hover-tilt">
-          <Image src="/me.png" alt="Profile" fill className="object-cover" />
+          <Image src="/me.jpg" alt="Profile" fill className="object-cover" />
         </div>
 
         <div className="text-center p-5 sm:p-10">
