@@ -59,10 +59,13 @@ export default function Home() {
     setContactForm({
       name: "",
       email: "",
-      message: "Hi Vincent! I'd like to request your full resume for a position I'm considering you for. Could you please send it over? Thank you!",
+      message:
+        "Hi Vincent! I'd like to request your full resume for a position I'm considering you for. Could you please send it over? Thank you!",
     });
     // Scroll to contact form
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById("contact-form")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
@@ -462,7 +465,7 @@ export default function Home() {
             LINUS CAAYUPAN
           </h1>
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Button 
+            <Button
               onClick={handleResumeRequest}
               variant="outline"
               size="sm"
@@ -602,11 +605,19 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {[
+                // {
+                //   name: "Tic Tac Toe",
+                //   description:
+                //     "Real-time multiplayer tic-tac-toe game with user authentication, live chat, global leaderboard, and room-based gameplay with WebSocket communication",
+                //   tech: "Next.js • TypeScript • Node.js • Express • MongoDB",
+                //   image: "/tictactoe.png",
+                //   link: "https://tic-tac-toe-weblc.vercel.app/",
+                // },
                 {
                   name: "Piper Warrior App",
                   description:
                     "Interactive aircraft information system for aviation training with QR code functionality and detailed component documentation",
-                  tech: "Next.js • TypeScript • QR Code",
+                  tech: "Next.js • TypeScript • Supabase",
                   image: "/piperwarrior.png",
                   link: "https://piperwarrior.vercel.app/",
                 },
@@ -614,7 +625,7 @@ export default function Home() {
                   name: "Homalift Corporate Site",
                   description:
                     "Professional elevator company website featuring interactive product showcases and project portfolio with lead generation forms",
-                  tech: "Next.js • Tailwind CSS • Resend",
+                  tech: "Next.js • Tailwind CSS",
                   image: "/homalift.png",
                   link: "https://homalift.vercel.app/",
                 },
@@ -637,21 +648,21 @@ export default function Home() {
                   description:
                     "Driver education management system with student enrollment, course tracking, and automated PDF report generation with decision support",
                   tech: "Next.js • Supabase • Puppeteer",
-                  image: "/project3.png",
+                  image: "/drivemetro.png",
                 },
                 {
                   name: "Emergency GPS Tracker",
                   description:
                     "Mobile emergency response application with real-time GPS tracking, offline data storage, and location-based emergency services",
-                  tech: "Flutter • Hive • Geolocator • Flutter Map",
-                  image: null,
+                  tech: "Flutter • Geolocator • Flutter Map",
+                  image: "/gps.png",
                 },
                 {
                   name: "NUDMarket Mobile POS",
                   description:
                     "Cross-platform mobile e-commerce POS application with shopping cart, product reviews, and inventory management for retail operations",
-                  tech: "Flutter • Supabase • GetX",
-                  image: null,
+                  tech: "Flutter • Supabase",
+                  image: "/project3.png",
                 },
               ].map((project) => (
                 <Card
