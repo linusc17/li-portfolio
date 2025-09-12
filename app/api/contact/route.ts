@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   try {
     const { name, email, message } = await request.json();
 
-    // Validate required fields
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -15,7 +14,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -25,8 +23,8 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>", // Using Resend's default domain
-      to: ["v.caayupan@gmail.com"], // Your email
+      from: "Portfolio Contact <onboarding@resend.dev>",
+      to: ["v.caayupan@gmail.com"],
       subject: `New Portfolio Contact from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -54,7 +52,7 @@ export async function POST(request: NextRequest) {
           </div>
         </div>
       `,
-      replyTo: email, // This allows you to reply directly to the sender
+      replyTo: email,
     });
 
     return NextResponse.json({

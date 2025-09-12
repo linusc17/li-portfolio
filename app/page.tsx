@@ -62,7 +62,6 @@ export default function Home() {
       message:
         "Hi Vincent! I'd like to request your full resume for a position I'm considering you for. Could you please send it over? Thank you!",
     });
-    // Scroll to contact form
     document
       .getElementById("contact-form")
       ?.scrollIntoView({ behavior: "smooth" });
@@ -91,9 +90,7 @@ export default function Home() {
     };
   }, []);
 
-  // Trigger animation check when selectedCategory changes
   useEffect(() => {
-    // Reset showAllSkills when category changes
     setShowAllSkills(false);
 
     const timer = setTimeout(() => {
@@ -104,12 +101,11 @@ export default function Home() {
           element.classList.remove("fade-out");
         }
       });
-    }, 50); // Small delay to ensure DOM updates
+    }, 50);
 
     return () => clearTimeout(timer);
   }, [selectedCategory]);
 
-  // Trigger animation check when showAllSkills changes
   useEffect(() => {
     if (showAllSkills) {
       const timer = setTimeout(() => {
@@ -120,7 +116,7 @@ export default function Home() {
             element.classList.remove("fade-out");
           }
         });
-      }, 100); // Slightly longer delay for smooth transition
+      }, 100);
 
       return () => clearTimeout(timer);
     }
@@ -397,7 +393,6 @@ export default function Home() {
     skillCategories[selectedCategory as keyof typeof skillCategories] ||
     skillCategories.All;
 
-  // For "All" category, limit initial display to 12 items (3 rows on desktop, manageable on mobile)
   const initialDisplayCount = 12;
   const shouldPaginate =
     selectedCategory === "All" &&
@@ -499,14 +494,11 @@ export default function Home() {
               Full-Stack Developer
             </h3>
             <div className="min-h-[3rem] sm:min-h-[4rem]">
-              {" "}
               <TypingAnimation />
             </div>
           </div>
 
           <div className="fade-in fade-out flex justify-center py-3 sm:py-4 gap-6 sm:gap-16">
-            {" "}
-            {/* Adjusted gap */}
             <Button variant="ghost" size="lg" asChild>
               <a href="https://www.facebook.com/linuscypn/" className="p-2">
                 <Facebook className="h-6 w-6 sm:h-8 sm:w-8" />
@@ -613,6 +605,14 @@ export default function Home() {
                 //   image: "/tictactoe.png",
                 //   link: "https://tic-tac-toe-weblc.vercel.app/",
                 // },
+                {
+                  name: "AI Fitness Planner",
+                  description:
+                    "Comprehensive fitness application with AI-powered workout and meal plan generation using Gemini API, featuring Filipino cuisine focus, progress tracking, and user authentication",
+                  tech: "Next.js 14 • TypeScript • Gemini AI • Supabase",
+                  image: "/fitness-planner.png",
+                  link: "https://fitness-planner-ai.vercel.app/",
+                },
                 {
                   name: "Piper Warrior App",
                   description:
@@ -748,7 +748,6 @@ export default function Home() {
             </h2>
             <div className="max-w-4xl mx-auto">
               <div className="relative">
-                {/* Timeline line - positioned consistently */}
                 <div className="absolute left-6 top-0 w-1 h-full bg-primary/20"></div>
 
                 <div className="space-y-8">
@@ -799,9 +798,7 @@ export default function Home() {
                     },
                   ].map((item, index) => (
                     <div key={index} className="fade-in fade-out relative">
-                      {/* Content card */}
                       <div className="ml-16 relative">
-                        {/* Timeline dot - positioned to center with the card */}
                         <div className="absolute -left-10 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background z-10"></div>
                         <Card className="hover-lift group">
                           <CardContent className="p-6 text-center md:text-left">
