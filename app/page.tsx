@@ -608,7 +608,7 @@ export default function Home() {
                 {
                   name: "AI Fitness Planner",
                   description:
-                    "Comprehensive fitness application with AI-powered workout and meal plan generation using Gemini API, featuring Filipino cuisine focus, progress tracking, and user authentication",
+                    "Comprehensive fitness application with AI-powered workout and meal plan generation using Gemini API, featuring Filipino cuisine focus, and progress tracking",
                   tech: "Next.js 14 • TypeScript • Gemini AI • Supabase",
                   image: "/fitness-planner.png",
                   link: "https://fitness-planner-ai.vercel.app/",
