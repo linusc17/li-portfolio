@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clear-db": "node scripts/clear-database.js"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-icons": "^1.3.1",
     "@radix-ui/react-scroll-area": "^1.2.0",
@@ -17,6 +19,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.2",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.454.0",
     "next": "15.0.2",

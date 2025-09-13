@@ -40,3 +40,4 @@ settings.local.json
 next-env.d.ts
 
 .vercel
+/scripts

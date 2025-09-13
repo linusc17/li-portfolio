@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import {
   Moon,
@@ -51,11 +51,26 @@ import {
 } from "@/components/ui/carousel";
 
 import TypingAnimation from "../components/TypingAnimation";
+import {
+  ProjectInteractions,
+  ProjectInteractionsRef,
+} from "@/components/ProjectInteractions";
+import { projects } from "@/lib/projects";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAllSkills, setShowAllSkills] = useState(false);
+
+  const projectRefs = useRef<
+    Record<string, React.RefObject<ProjectInteractionsRef>>
+  >({});
+  projects.forEach((project) => {
+    if (!projectRefs.current[project.slug]) {
+      projectRefs.current[project.slug] =
+        React.createRef<ProjectInteractionsRef>();
+    }
+  });
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -603,127 +618,57 @@ export default function Home() {
               Personal Projects
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-              {[
-                // {
-                //   name: "Tic Tac Toe",
-                //   description:
-                //     "Real-time multiplayer tic-tac-toe game with user authentication, live chat, global leaderboard, and room-based gameplay with WebSocket communication",
-                //   tech: "Next.js • TypeScript • Node.js • Express • MongoDB",
-                //   image: "/tictactoe.png",
-                //   link: "https://tic-tac-toe-weblc.vercel.app/",
-                // },
-                {
-                  name: "Buzz Coffee Shop System",
-                  description:
-                    "Complete coffee shop management system with customer token-based ordering, real-time order tracking, staff dashboard, and social media integration for seamless customer experience",
-                  tech: "Next.js 15 • TypeScript • Firebase",
-                  images: ["/buzz0.png", "/buzz1.png", "/buzz2.png"],
-                  link: "https://buzzph.vercel.app/",
-                },
-                {
-                  name: "AI Fitness Planner",
-                  description:
-                    "Comprehensive fitness application with AI-powered workout and meal plan generation using Gemini API, featuring Filipino cuisine focus, and progress tracking",
-                  tech: "Next.js 14 • TypeScript • Gemini AI • Supabase",
-                  images: [
-                    "/fitness-planner.png",
-                    "/fitness-planner1.png",
-                    "/fitness-planner2.png",
-                  ],
-                  link: "https://fitness-planner-ai.vercel.app/",
-                },
-                {
-                  name: "Piper Warrior App",
-                  description:
-                    "Interactive aircraft information system for aviation training with QR code functionality and detailed component documentation",
-                  tech: "Next.js • TypeScript • Supabase",
-                  image: "/piperwarrior.png",
-                  link: "https://piperwarrior.vercel.app/",
-                },
-                {
-                  name: "Homalift Corporate Site",
-                  description:
-                    "Professional elevator company website featuring interactive product showcases and project portfolio with lead generation forms",
-                  tech: "Next.js • Tailwind CSS",
-                  image: "/homalift.png",
-                  link: "https://homalift.vercel.app/",
-                },
-                {
-                  name: "Facilities System",
-                  description:
-                    "Comprehensive facilities management system for university use with maintenance request tracking, equipment reservation, and room booking capabilities",
-                  tech: "HTML • CSS • Tailwind CSS • PHP • MySQL",
-                  image: "/project4.png",
-                },
-                {
-                  name: "Travel Agency Website",
-                  description:
-                    "Booking and reservation system for travel agency with streamlined trip management and customer portal using WordPress",
-                  tech: "WordPress • WPTravelEngine",
-                  image: "/project2.png",
-                },
-                {
-                  name: "DriveMetro",
-                  description:
-                    "Driver education management system with student enrollment, course tracking, and automated PDF report generation with decision support",
-                  tech: "Next.js • Supabase • Puppeteer",
-                  image: "/drivemetro.png",
-                },
-                {
-                  name: "Emergency GPS Tracker",
-                  description:
-                    "Mobile emergency response application with real-time GPS tracking, offline data storage, and location-based emergency services",
-                  tech: "Flutter • Geolocator • Flutter Map",
-                  image: "/gps.png",
-                },
-                {
-                  name: "NUDMarket Mobile POS",
-                  description:
-                    "Cross-platform mobile e-commerce POS application with shopping cart, product reviews, and inventory management for retail operations",
-                  tech: "Flutter • Supabase",
-                  image: "/project3.png",
-                },
-              ].map((project) => (
-                <Card
-                  key={project.name}
-                  className="fade-in fade-out overflow-hidden hover-lift group"
-                >
-                  <CardContent className="p-0">
-                    <div className="relative h-96 overflow-hidden bg-muted/50">
-                      {project.images ? (
-                        <Carousel className="w-full h-full">
-                          <CarouselContent>
-                            {project.images.map(
-                              (image: string, index: number) => (
-                                <CarouselItem key={index}>
-                                  <div className="relative h-96">
-                                    <Image
-                                      src={image}
-                                      alt={`${project.name} - Image ${
-                                        index + 1
-                                      }`}
-                                      fill
-                                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                    />
-                                  </div>
-                                </CarouselItem>
-                              )
-                            )}
-                          </CarouselContent>
-                          <CarouselPrevious className="left-2" />
-                          <CarouselNext className="right-2" />
-                        </Carousel>
-                      ) : project.image ? (
-                        <>
-                          <Image
-                            src={project.image}
-                            alt={project.name}
-                            fill
-                            className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              const parent = e.currentTarget.parentElement;
-                              if (parent) {
-                                parent.innerHTML = `
+              {projects.map((project) => {
+                const interactionRef = projectRefs.current[project.slug];
+
+                const handleCardHover = () => {
+                  if (interactionRef?.current) {
+                    interactionRef.current.incrementView();
+                  }
+                };
+
+                return (
+                  <Card
+                    key={project.slug}
+                    className="fade-in fade-out overflow-hidden hover-lift group"
+                    onMouseEnter={handleCardHover}
+                  >
+                    <CardContent className="p-0">
+                      <div className="relative h-96 overflow-hidden bg-muted/50">
+                        {project.images ? (
+                          <Carousel className="w-full h-full">
+                            <CarouselContent>
+                              {project.images.map(
+                                (image: string, index: number) => (
+                                  <CarouselItem key={index}>
+                                    <div className="relative h-96">
+                                      <Image
+                                        src={image}
+                                        alt={`${project.name} - Image ${
+                                          index + 1
+                                        }`}
+                                        fill
+                                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                      />
+                                    </div>
+                                  </CarouselItem>
+                                )
+                              )}
+                            </CarouselContent>
+                            <CarouselPrevious className="left-2" />
+                            <CarouselNext className="right-2" />
+                          </Carousel>
+                        ) : project.image ? (
+                          <>
+                            <Image
+                              src={project.image}
+                              alt={project.name}
+                              fill
+                              className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                              onError={(e) => {
+                                const parent = e.currentTarget.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = `
                                   <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
                                     <div class="text-center">
                                       <div class="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -733,53 +678,64 @@ export default function Home() {
                                     </div>
                                   </div>
                                 `;
-                              }
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                          <div className="text-center">
-                            <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
-                              <span className="text-2xl text-primary">📁</span>
+                                }
+                              }}
+                            />
+                          </>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                            <div className="text-center">
+                              <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
+                                <span className="text-2xl text-primary">
+                                  📁
+                                </span>
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                Project Preview
+                              </p>
                             </div>
-                            <p className="text-sm text-muted-foreground">
-                              Project Preview
-                            </p>
+                          </div>
+                        )}
+                        {project.link && (
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <Button
+                              asChild
+                              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
+                            >
+                              <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Visit Site
+                              </a>
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-semibold mb-2">
+                          {project.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {project.description}
+                        </p>
+                        <div className="text-center mb-3">
+                          <div className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full inline-block">
+                            {project.tech}
                           </div>
                         </div>
-                      )}
-                      {project.link && (
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                          <Button
-                            asChild
-                            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
-                          >
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Visit Site
-                            </a>
-                          </Button>
+                        <div className="flex justify-center">
+                          <ProjectInteractions
+                            ref={interactionRef}
+                            projectSlug={project.slug}
+                          />
                         </div>
-                      )}
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">
-                        {project.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {project.description}
-                      </p>
-                      <div className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full inline-block">
-                        {project.tech}
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
 
