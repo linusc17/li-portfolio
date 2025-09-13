@@ -42,6 +42,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import TypingAnimation from "../components/TypingAnimation";
 
@@ -606,11 +613,23 @@ export default function Home() {
                 //   link: "https://tic-tac-toe-weblc.vercel.app/",
                 // },
                 {
+                  name: "Buzz Coffee Shop System",
+                  description:
+                    "Complete coffee shop management system with customer token-based ordering, real-time order tracking, staff dashboard, and social media integration for seamless customer experience",
+                  tech: "Next.js 15 • TypeScript • Firebase",
+                  images: ["/buzz0.png", "/buzz1.png", "/buzz2.png"],
+                  link: "https://buzzph.vercel.app/",
+                },
+                {
                   name: "AI Fitness Planner",
                   description:
                     "Comprehensive fitness application with AI-powered workout and meal plan generation using Gemini API, featuring Filipino cuisine focus, and progress tracking",
                   tech: "Next.js 14 • TypeScript • Gemini AI • Supabase",
-                  image: "/fitness-planner.png",
+                  images: [
+                    "/fitness-planner.png",
+                    "/fitness-planner1.png",
+                    "/fitness-planner2.png",
+                  ],
                   link: "https://fitness-planner-ai.vercel.app/",
                 },
                 {
@@ -671,7 +690,30 @@ export default function Home() {
                 >
                   <CardContent className="p-0">
                     <div className="relative h-96 overflow-hidden bg-muted/50">
-                      {project.image ? (
+                      {project.images ? (
+                        <Carousel className="w-full h-full">
+                          <CarouselContent>
+                            {project.images.map(
+                              (image: string, index: number) => (
+                                <CarouselItem key={index}>
+                                  <div className="relative h-96">
+                                    <Image
+                                      src={image}
+                                      alt={`${project.name} - Image ${
+                                        index + 1
+                                      }`}
+                                      fill
+                                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                  </div>
+                                </CarouselItem>
+                              )
+                            )}
+                          </CarouselContent>
+                          <CarouselPrevious className="left-2" />
+                          <CarouselNext className="right-2" />
+                        </Carousel>
+                      ) : project.image ? (
                         <>
                           <Image
                             src={project.image}
@@ -707,12 +749,11 @@ export default function Home() {
                           </div>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       {project.link && (
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                           <Button
                             asChild
-                            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
                           >
                             <a
                               href={project.link}
