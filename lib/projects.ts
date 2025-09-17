@@ -10,6 +10,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "tic-tac-toe",
+    name: "Tic Tac Toe",
+    description:
+      "Interactive Tic Tac Toe with local, AI, and online multiplayer modes featuring chat, reactions, and competitive leaderboards",
+    tech: "Next.js • TypeScript • Socket.io • Supabase • AI",
+    images: ["/tictactoe.png"],
+    link: "https://tic-tac-toe-weblc.vercel.app/",
+  },
+  {
     slug: "buzz-coffee-shop",
     name: "Buzz Coffee Shop System",
     description:
