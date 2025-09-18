@@ -14,7 +14,7 @@ export const projects: Project[] = [
     name: "Tic Tac Toe",
     description:
       "Interactive Tic Tac Toe with local, AI, and online multiplayer modes featuring chat, reactions, and competitive leaderboards",
-    tech: "Next.js • TypeScript • Socket.io • Supabase",
+    tech: "Next.js • TypeScript • Socket.io • Express.js • MongoDB",
     image: "/tictactoe.png",
     link: "https://tic-tac-toe-weblc.vercel.app/",
   },
