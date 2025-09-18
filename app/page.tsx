@@ -750,7 +750,7 @@ export default function Home() {
                 <div className="space-y-8">
                   {[
                     {
-                      period: "Oct 2024 - Present",
+                      period: "Oct 2024 - Sept 2025",
                       role: "Junior Software Engineer",
                       company: "Nerve Technologies",
                       achievements: [
