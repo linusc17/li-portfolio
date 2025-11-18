@@ -4,37 +4,30 @@
 
 @layer base {
   :root {
-    /* Warm off-white background instead of harsh white */
     --background: 210 20% 98%;
     --foreground: 215 25% 27%;
 
-    /* Subtle card backgrounds with gentle elevation */
     --card: 210 25% 97%;
     --card-foreground: 215 25% 27%;
 
     --popover: 210 25% 97%;
     --popover-foreground: 215 25% 27%;
 
-    /* Softer primary color - professional blue-gray */
     --primary: 215 30% 35%;
     --primary-foreground: 210 40% 98%;
 
-    /* Gentle secondary colors */
     --secondary: 210 30% 92%;
     --secondary-foreground: 215 25% 35%;
 
-    /* Muted colors for less important content */
     --muted: 210 25% 94%;
     --muted-foreground: 215 15% 55%;
 
-    /* Subtle accent colors */
     --accent: 210 25% 93%;
     --accent-foreground: 215 25% 35%;
 
     --destructive: 0 65% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Softer borders and inputs */
     --border: 215 20% 88%;
     --input: 215 20% 90%;
     --ring: 215 30% 35%;
@@ -99,7 +92,6 @@
   transition: opacity 1s ease, transform 1s ease;
 }
 
-/* Enhanced Animations */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -134,7 +126,6 @@
   animation: shimmer 2s infinite;
 }
 
-/* Enhanced Hover Effects */
 .hover-lift {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -152,12 +143,10 @@
   transform: perspective(1000px) rotateX(10deg) rotateY(5deg) translateZ(50px);
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Text truncation utilities */
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
