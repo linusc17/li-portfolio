@@ -63,7 +63,7 @@ export default function Home() {
   const [showAllSkills, setShowAllSkills] = useState(false);
 
   const projectRefs = useRef<
-    Record<string, React.RefObject<ProjectInteractionsRef>>
+    Record<string, React.RefObject<ProjectInteractionsRef | null>>
   >({});
   projects.forEach((project) => {
     if (!projectRefs.current[project.slug]) {
