@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://linuscypn.vercel.app"),
+  metadataBase: new URL("https://linuscypn.dev"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Vincent Linus Caayupan | Full-Stack Developer",
     description: "Passionate Full-Stack Developer specializing in MERN stack, React, Next.js, and mobile development.",
-    url: "https://linuscypn.vercel.app",
+    url: "https://linuscypn.dev",
     siteName: "Vincent Linus Caayupan Portfolio",
     locale: "en_US",
     type: "website",
