@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 215 20% 93%;
+    --background: 220 14% 90%;
     --foreground: 220 30% 12%;
 
-    --card: 210 15% 98%;
+    --card: 220 12% 95%;
     --card-foreground: 220 30% 12%;
 
-    --popover: 210 15% 98%;
+    --popover: 220 12% 95%;
     --popover-foreground: 220 30% 12%;
 
     --primary: 200 90% 40%;
@@ -142,6 +142,10 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -160,7 +164,7 @@ html {
   inset: 0;
   background: radial-gradient(
     ellipse 80% 50% at 50% 0%,
-    hsl(var(--primary) / 0.04) 0%,
+    hsl(var(--primary) / 0.02) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -169,7 +173,7 @@ html {
 :root .section-gradient::before {
   background: radial-gradient(
     ellipse 80% 50% at 50% 0%,
-    hsl(var(--primary) / 0.07) 0%,
+    hsl(var(--primary) / 0.03) 0%,
     transparent 70%
   );
 }

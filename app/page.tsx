@@ -719,7 +719,7 @@ export default function Home() {
     <div>
       <AnimatedBackground darkMode={darkMode} />
       <main className="relative z-10 text-foreground min-h-screen px-4 sm:px-10 md:px-20 lg:px-40">
-        <nav className="py-4 sm:py-6 flex justify-between items-center sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
+        <nav className="py-4 sm:py-6 flex justify-between items-center sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/20 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bebas-neue tracking-wider text-primary">
             LINUS CAAYUPAN
           </h1>
@@ -863,7 +863,7 @@ export default function Home() {
           )}
         </section>
 
-        <section id="projects" className="text-center my-12 sm:mt-8 mb-32">
+        <section id="projects" className="text-center my-12 sm:mt-8 mb-32 section-gradient">
           <h2 className="fade-in font-bebas-neue text-3xl sm:text-5xl md:text-6xl py-4 sm:py-8 md:py-12 text-primary tracking-wider">
             PERSONAL PROJECTS
           </h2>
@@ -1144,7 +1144,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="border-t border-border/50 py-8 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
+        <footer className="border-t border-border/20 py-8 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} Vincent Linus Caayupan

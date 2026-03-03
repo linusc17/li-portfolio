@@ -3,10 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const phrases = [
-  "Building scalable full-stack applications.",
-  "Crafting seamless user experiences.",
-  "Turning ideas into real-time products.",
-  "Writing clean, maintainable code.",
+  "I build things for the web.",
+  "Let's connect!",
 ];
 
 const TypingAnimation = () => {
