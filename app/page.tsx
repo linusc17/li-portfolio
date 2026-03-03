@@ -70,6 +70,10 @@ import { projects } from "@/lib/projects";
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
   const [showAllSkills, setShowAllSkills] = useState(false);
 
   const projectRefs = useRef<
@@ -684,7 +688,7 @@ export default function Home() {
   };
 
   return (
-    <div className={`${darkMode ? "dark" : ""} min-h-screen bg-background`}>
+    <div>
       <main className="bg-background text-foreground min-h-screen px-4 sm:px-10 md:px-20 lg:px-40 bg-grain">
         <nav className="py-4 sm:py-6 flex justify-between items-center sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bebas-neue tracking-wider text-primary">
