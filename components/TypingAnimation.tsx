@@ -34,7 +34,12 @@ const TypingAnimation = () => {
     return () => clearTimeout(timeout);
   }, [text, isDeleting]);
 
-  return <p className="text-lg text-muted-foreground mt-2 h-[1.5em]">{text}</p>;
+  return (
+    <p className="text-base sm:text-lg text-muted-foreground mt-2 h-[1.5em] max-w-xl mx-auto">
+      {text}
+      <span className="inline-block w-[2px] h-[1em] bg-primary ml-0.5 animate-pulse align-text-bottom" />
+    </p>
+  );
 };
 
 export default TypingAnimation;
