@@ -1,35 +1,39 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+const phrases = [
+  "Building scalable full-stack applications.",
+  "Crafting seamless user experiences.",
+  "Turning ideas into real-time products.",
+  "Writing clean, maintainable code.",
+];
 
 const TypingAnimation = () => {
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const fullText =
-    "Building scalable full-stack applications with modern technologies and real-time features.";
+  const phraseIndex = useRef(0);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
+    const currentPhrase = phrases[phraseIndex.current];
 
-    const handleTyping = () => {
-      if (!isDeleting && text === fullText) {
-        timeout = setTimeout(() => setIsDeleting(true), 500);
-      } else if (isDeleting && text === "") {
-        timeout = setTimeout(() => setIsDeleting(false), 250);
-      } else {
-        timeout = setTimeout(
-          () => {
-            const newText = isDeleting
-              ? text.slice(0, -1)
-              : fullText.slice(0, text.length + 1);
-            setText(newText);
-          },
-          isDeleting ? 25 : 50
-        );
-      }
-    };
-
-    handleTyping();
+    if (!isDeleting && text === currentPhrase) {
+      timeout = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && text === "") {
+      phraseIndex.current = (phraseIndex.current + 1) % phrases.length;
+      timeout = setTimeout(() => setIsDeleting(false), 400);
+    } else {
+      timeout = setTimeout(
+        () => {
+          const newText = isDeleting
+            ? text.slice(0, -1)
+            : currentPhrase.slice(0, text.length + 1);
+          setText(newText);
+        },
+        isDeleting ? 20 : 45
+      );
+    }
 
     return () => clearTimeout(timeout);
   }, [text, isDeleting]);

@@ -11,6 +11,7 @@ import {
   Phone,
   Mail,
   Linkedin,
+  ChevronUp,
 } from "lucide-react";
 import {
   SiJavascript,
@@ -51,7 +52,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import {
   Carousel,
   CarouselContent,
@@ -66,14 +66,40 @@ import {
   ProjectInteractionsRef,
 } from "@/components/ProjectInteractions";
 import { projects } from "@/lib/projects";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [activeSection, setActiveSection] = useState("");
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+
+      const sections = ["skills", "projects", "experience", "contact-form"];
+      let current = "";
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150) {
+            current = id;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const [showAllSkills, setShowAllSkills] = useState(false);
 
   const projectRefs = useRef<
@@ -691,22 +717,23 @@ export default function Home() {
 
   return (
     <div>
-      <main className="bg-background text-foreground min-h-screen px-4 sm:px-10 md:px-20 lg:px-40 bg-grain">
+      <AnimatedBackground darkMode={darkMode} />
+      <main className="relative z-10 text-foreground min-h-screen px-4 sm:px-10 md:px-20 lg:px-40">
         <nav className="py-4 sm:py-6 flex justify-between items-center sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bebas-neue tracking-wider text-primary">
             LINUS CAAYUPAN
           </h1>
           <div className="flex items-center space-x-1 sm:space-x-6">
-            <a href="#skills" className="hidden md:inline-block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#skills" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "skills" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               Skills
             </a>
-            <a href="#projects" className="hidden md:inline-block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#projects" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "projects" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               Projects
             </a>
-            <a href="#experience" className="hidden md:inline-block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#experience" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "experience" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               Experience
             </a>
-            <a href="#contact-form" className="hidden md:inline-block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#contact-form" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "contact-form" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               Contact
             </a>
             <Button
@@ -717,15 +744,14 @@ export default function Home() {
             >
               Request Resume
             </Button>
-            <Switch
-              checked={darkMode}
-              onCheckedChange={setDarkMode}
-              className="data-[state=checked]:bg-primary"
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="theme-toggle"
+              aria-label="Toggle theme"
             >
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Switch>
+              <Sun className={`h-[1.2rem] w-[1.2rem] theme-toggle-icon ${darkMode ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"}`} />
+              <Moon className={`h-[1.2rem] w-[1.2rem] theme-toggle-icon ${darkMode ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"}`} />
+            </button>
           </div>
         </nav>
 
@@ -793,7 +819,7 @@ export default function Home() {
             {filteredSkills.map(({ Icon, name, description }) => (
               <Card
                 key={name}
-                className="fade-in hover-lift relative overflow-hidden group"
+                className="fade-in hover-lift skill-card relative overflow-hidden group"
               >
                 <CardContent className="p-4 sm:p-6 flex flex-col items-center justify-center relative z-10 h-full min-h-[200px]">
                   <Icon className="text-5xl sm:text-6xl text-primary mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300" />
@@ -861,12 +887,12 @@ export default function Home() {
           </h2>
           <div className="max-w-4xl mx-auto">
             <div className="relative">
-              <div className="absolute left-6 top-0 w-0.5 h-full bg-border"></div>
+              <div className="absolute left-6 top-0 w-0.5 h-full timeline-line"></div>
 
               <div className="space-y-8">
                 <div className="fade-in relative">
                   <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 w-3 h-3 bg-primary rounded-full border-2 border-background z-10"></div>
+                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot z-10"></div>
                     <Card className="hover-lift">
                       <CardContent className="p-6 text-left">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
@@ -898,7 +924,7 @@ export default function Home() {
 
                 <div className="fade-in relative">
                   <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 w-3 h-3 bg-primary rounded-full border-2 border-background z-10"></div>
+                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot z-10"></div>
                     <Card className="hover-lift">
                       <CardContent className="p-6 text-left">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
@@ -950,7 +976,7 @@ export default function Home() {
 
                 <div className="fade-in relative">
                   <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 w-3 h-3 bg-muted-foreground/50 rounded-full border-2 border-background z-10"></div>
+                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot-muted z-10"></div>
                     <Card className="hover-lift">
                       <CardContent className="p-6 text-left">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
@@ -981,7 +1007,7 @@ export default function Home() {
 
                 <div className="fade-in relative">
                   <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 w-3 h-3 bg-muted-foreground/50 rounded-full border-2 border-background z-10"></div>
+                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot-muted z-10"></div>
                     <Card className="hover-lift">
                       <CardContent className="p-6 text-left">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
@@ -1117,7 +1143,34 @@ export default function Home() {
             </Card>
           </div>
         </section>
+
+        <footer className="border-t border-border/50 py-8 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} Vincent Linus Caayupan
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="https://github.com/linusc17" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Github className="h-4 w-4" />
+              </a>
+              <a href="https://www.linkedin.com/in/linuscypn/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a href="mailto:v.caayupan@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </footer>
       </main>
+
+      <button
+        className={`scroll-top-btn ${showScrollTop ? "visible" : ""}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="h-5 w-5" />
+      </button>
     </div>
   );
 }
