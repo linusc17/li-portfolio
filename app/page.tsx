@@ -597,7 +597,7 @@ export default function Home() {
         className="fade-in overflow-hidden hover-lift group"
         onMouseEnter={handleCardHover}
       >
-        <CardContent className="p-0">
+        <CardContent className="p-0 flex flex-col h-full">
           <div className={`relative ${imageHeight} overflow-hidden bg-muted/50`}>
             {project.images ? (
               <Carousel className="w-full h-full">
@@ -667,19 +667,21 @@ export default function Home() {
               </div>
             )}
           </div>
-          <div className="p-6 text-left">
+          <div className="p-6 text-center flex flex-col flex-1">
             <h3 className="text-xl font-bold mb-2">{project.name}</h3>
-            <p className="text-sm text-muted-foreground mb-3">
+            <p className="text-sm text-muted-foreground mb-3 flex-1">
               {project.description}
             </p>
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full inline-block">
                 {project.tech}
               </div>
-              <ProjectInteractions
-                ref={interactionRef}
-                projectSlug={project.slug}
-              />
+              <div className="flex justify-center">
+                <ProjectInteractions
+                  ref={interactionRef}
+                  projectSlug={project.slug}
+                />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -727,7 +729,7 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="text-center py-16 sm:py-24 md:py-32 lg:py-40 max-w-3xl mx-auto">
+        <section className="text-center min-h-[calc(100vh-4rem)] flex flex-col justify-center max-w-3xl mx-auto">
           <div className="space-y-6 mb-10">
             <h2 className="fade-in text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
               Vincent Linus
@@ -749,7 +751,7 @@ export default function Home() {
               </a>
             </Button>
             <Button variant="ghost" size="icon" asChild className="h-12 w-12 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <a href="https://www.instagram.com/lns.ai/" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/linuscypnn/" target="_blank" rel="noopener noreferrer">
                 <Instagram className="h-5 w-5" />
                 <span className="sr-only">Instagram</span>
               </a>
@@ -914,27 +916,27 @@ export default function Home() {
 
                         <div className="border-l-2 border-primary/20 pl-4 mb-4">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Dona Alejandra, Inc.</h5>
+                            <h5 className="text-sm font-semibold text-foreground">Dona Alejandra, Inc. (Frontend Developer)</h5>
                             <span className="text-xs text-muted-foreground">Nov 2025</span>
                           </div>
                           <p className="text-sm text-muted-foreground leading-relaxed">
-                            Built a scalable enterprise HR management platform using React, Vite, Tailwind CSS, Material UI, and FullCalendar. Integrated RESTful APIs with Axios.
+                            Built a government HRIS (Human Resource Information System) using React, Vite, Tailwind CSS, Material UI, and FullCalendar. Integrated RESTful APIs with Axios for employee management and scheduling.
                           </p>
                         </div>
 
                         <div className="border-l-2 border-primary/20 pl-4 mb-4">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Apetomic Studio</h5>
+                            <h5 className="text-sm font-semibold text-foreground">Apetomic Studio (Lead Full Stack Developer)</h5>
                             <span className="text-xs text-muted-foreground">Sep 2025</span>
                           </div>
                           <p className="text-sm text-muted-foreground leading-relaxed">
-                            Developed a game using Next.js, Supabase, Framer Motion, and PixiJS with Zustand and XState for complex state management.
+                            Led development of a game using Next.js, Supabase, Framer Motion, and PixiJS with Zustand and XState for complex state management.
                           </p>
                         </div>
 
                         <div className="border-l-2 border-primary/20 pl-4">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Techmaker Digital Innovations</h5>
+                            <h5 className="text-sm font-semibold text-foreground">Techmaker Digital Innovations (Full Stack Developer)</h5>
                             <span className="text-xs text-muted-foreground">Oct 2024</span>
                           </div>
                           <p className="text-sm text-muted-foreground leading-relaxed">
