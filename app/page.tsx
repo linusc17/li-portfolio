@@ -932,9 +932,7 @@ export default function Home() {
                             <h3 className="text-xl font-bold mb-1">Freelance Developer</h3>
                             <h4 className="text-base text-primary font-medium">Contract Work</h4>
                           </div>
-                          <div className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
-                            Oct 2024 - Present
-                          </div>
+                          
                         </div>
                         <p className="text-sm text-muted-foreground mb-4">
                           Select contract engagements alongside full-time role:
