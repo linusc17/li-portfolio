@@ -60,6 +60,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import TypingAnimation from "../components/TypingAnimation";
 import {
   ProjectInteractions,
@@ -73,6 +77,8 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeSection, setActiveSection] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -630,7 +636,10 @@ export default function Home() {
                 <CarouselContent>
                   {project.images.map((image: string, index: number) => (
                     <CarouselItem key={index}>
-                      <div className={`relative ${imageHeight}`}>
+                      <div
+                        className={`relative ${imageHeight} cursor-zoom-in`}
+                        onClick={() => { setLightboxImages(project.images!); setLightboxIndex(index); }}
+                      >
                         <Image
                           src={image}
                           alt={`${project.name} - Image ${index + 1}`}
@@ -649,7 +658,8 @@ export default function Home() {
                 src={project.image}
                 alt={project.name}
                 fill
-                className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                onClick={() => { setLightboxImages([project.image!]); setLightboxIndex(0); }}
+                className="object-cover transform group-hover:scale-105 transition-transform duration-500 cursor-zoom-in"
                 onError={(e) => {
                   const parent = e.currentTarget.parentElement;
                   if (parent) {
@@ -676,20 +686,31 @@ export default function Home() {
                 </div>
               </div>
             )}
-            {project.link && (
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-background/40">
-                <Button
-                  asChild
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
-                >
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+            {(project.link || project.images) && (
+              <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-background/40">
+                {project.link && (
+                  <Button
+                    asChild
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
                   >
-                    Visit Site
-                  </a>
-                </Button>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit Site
+                    </a>
+                  </Button>
+                )}
+                {project.images && (
+                  <Button
+                    variant="secondary"
+                    className="shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
+                    onClick={() => { setLightboxImages(project.images!); setLightboxIndex(0); }}
+                  >
+                    View Images
+                  </Button>
+                )}
               </div>
             )}
           </div>
@@ -870,13 +891,13 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {projects.slice(0, 2).map((project) =>
-              renderProjectCard(project, "h-72 sm:h-96")
+              renderProjectCard(project, "h-80 sm:h-[28rem]")
             )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {projects.slice(2).map((project) =>
-              renderProjectCard(project, "h-64")
+              renderProjectCard(project, "h-72")
             )}
           </div>
         </section>
@@ -1169,6 +1190,58 @@ export default function Home() {
       >
         <ChevronUp className="h-5 w-5" />
       </button>
+
+      {lightboxImages.length > 0 && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm cursor-pointer"
+          onClick={() => setLightboxImages([])}
+        >
+          {lightboxImages.length > 1 && (
+            <button
+              className="absolute left-4 sm:left-8 z-10 p-3 text-white/70 hover:text-white transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((i) => (i - 1 + lightboxImages.length) % lightboxImages.length);
+              }}
+            >
+              <ChevronUp className="h-8 w-8 -rotate-90" />
+            </button>
+          )}
+
+          <Image
+            src={lightboxImages[lightboxIndex]}
+            alt="Project screenshot"
+            width={900}
+            height={1600}
+            className="max-h-[85vh] w-auto object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {lightboxImages.length > 1 && (
+            <button
+              className="absolute right-4 sm:right-8 z-10 p-3 text-white/70 hover:text-white transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((i) => (i + 1) % lightboxImages.length);
+              }}
+            >
+              <ChevronUp className="h-8 w-8 rotate-90" />
+            </button>
+          )}
+
+          {lightboxImages.length > 1 && (
+            <div className="absolute bottom-6 flex gap-1.5">
+              {lightboxImages.map((_, i) => (
+                <button
+                  key={i}
+                  className={`w-2 h-2 rounded-full transition-colors ${i === lightboxIndex ? "bg-white" : "bg-white/30"}`}
+                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -10,6 +10,21 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "ledger",
+    name: "Ledger",
+    description:
+      "Personal workflow tracker for freelancers — daily task checklists per client, salary tracking with pay day calendars, and completion history heatmaps. Installable as a PWA.",
+    tech: "Next.js 16 • TypeScript • Convex • Tailwind v4 • shadcn/ui",
+    images: [
+      "/ledger-today.png",
+      "/ledger-salary.png",
+      "/ledger-drawer.png",
+      "/ledger-history.png",
+      "/ledger-settings.png",
+    ],
+    link: "https://use-ledger.vercel.app/",
+  },
+  {
     slug: "tic-tac-toe",
     name: "Tic Tac Toe",
     description:
