@@ -19,8 +19,9 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-dm-sans)", ...fontFamily.sans],
-        "bebas-neue": ["var(--font-bebas-neue)", ...fontFamily.sans],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+        display: ["var(--font-display)", ...fontFamily.sans],
+        mono: ["var(--font-mono)", ...fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -35,6 +36,10 @@ module.exports = {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

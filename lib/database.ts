@@ -1,10 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set");
-}
-
-export const sql = neon(process.env.DATABASE_URL);
+const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 
 export interface ProjectStats {
   project_slug: string;
@@ -25,6 +21,7 @@ export interface UserInteraction {
 }
 
 export async function getAllProjectStats(): Promise<ProjectStats[]> {
+  if (!sql) return [];
   try {
     const result = await sql`
       SELECT project_slug, project_name, views_count, hearts_count, created_at, updated_at
@@ -41,6 +38,7 @@ export async function getAllProjectStats(): Promise<ProjectStats[]> {
 export async function getProjectStats(
   slug: string
 ): Promise<ProjectStats | null> {
+  if (!sql) return null;
   try {
     const result = await sql`
       SELECT project_slug, project_name, views_count, hearts_count, created_at, updated_at
@@ -55,6 +53,7 @@ export async function getProjectStats(
 }
 
 export async function upsertProject(slug: string, name: string): Promise<void> {
+  if (!sql) return;
   try {
     await sql`
       INSERT INTO project_interactions (project_slug, project_name, views_count, hearts_count)
@@ -74,6 +73,7 @@ export async function incrementViews(
   userIP: string,
   userFingerprint?: string
 ): Promise<{ success: boolean; message: string }> {
+  if (!sql) return { success: false, message: "Stats are not available." };
   try {
     const recentView = await sql`
       SELECT id FROM user_interactions
@@ -114,6 +114,12 @@ export async function toggleHeart(
   userIP: string,
   userFingerprint?: string
 ): Promise<{ success: boolean; message: string; hearted: boolean }> {
+  if (!sql)
+    return {
+      success: false,
+      message: "Stats are not available.",
+      hearted: false,
+    };
   try {
     const recentHeart = await sql`
       SELECT id FROM user_interactions

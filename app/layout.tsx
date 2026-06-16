@@ -1,21 +1,25 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { DM_Sans, Bebas_Neue } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 
-const dmSans = DM_Sans({
+const sans = Geist({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
-  weight: ["400", "500", "700"],
+  variable: "--font-sans",
 });
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const mono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-bebas-neue",
+  variable: "--font-mono",
+});
+const display = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Vincent Linus Caayupan | Full-Stack Developer",
-  description: "Passionate Full-Stack Developer specializing in MERN stack, React, Next.js, and mobile development. Building scalable applications with modern technologies and real-time features.",
+  description:
+    "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter. Recent work spans coffee, aviation, fitness, and government.",
   keywords: [
     "Vincent Linus Caayupan",
     "Full-Stack Developer",
@@ -27,7 +31,7 @@ export const metadata: Metadata = {
     "Flutter",
     "MongoDB",
     "Node.js",
-    "Portfolio"
+    "Portfolio",
   ],
   authors: [{ name: "Vincent Linus Caayupan" }],
   creator: "Vincent Linus Caayupan",
@@ -43,7 +47,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Vincent Linus Caayupan | Full-Stack Developer",
-    description: "Passionate Full-Stack Developer specializing in MERN stack, React, Next.js, and mobile development.",
+    description:
+      "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter.",
     url: "https://linuscypn.dev",
     siteName: "Vincent Linus Caayupan Portfolio",
     locale: "en_US",
@@ -52,7 +57,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Vincent Linus Caayupan | Full-Stack Developer",
-    description: "Passionate Full-Stack Developer specializing in MERN stack, React, Next.js, and mobile development.",
+    description:
+      "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter.",
   },
   robots: {
     index: true,
@@ -67,14 +73,21 @@ export const metadata: Metadata = {
   },
 };
 
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':true;var c=document.documentElement.classList;d?c.add('dark'):c.remove('dark');}catch(e){document.documentElement.classList.add('dark');}})();`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${dmSans.variable} ${bebasNeue.variable} font-sans`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body
+        className={`${sans.variable} ${display.variable} ${mono.variable} font-sans antialiased`}
+      >
         {children}
       </body>
     </html>

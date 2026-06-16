@@ -5,13 +5,18 @@ import Image from "next/image";
 import {
   Moon,
   Sun,
-  Facebook,
-  Instagram,
-  Github,
   Phone,
   Mail,
-  Linkedin,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  ArrowUpRight,
+  ArrowRight,
+  MapPin,
+  ImageOff,
+  Maximize2,
+  Database,
 } from "lucide-react";
 import {
   SiJavascript,
@@ -41,6 +46,7 @@ import {
   SiVite,
   SiAntdesign,
   SiNestjs,
+  SiLaravel,
   SiPostgresql,
   SiSequelize,
   SiFramer,
@@ -48,6 +54,9 @@ import {
   SiMui,
   SiJest,
   SiFlutter,
+  SiLinkedin,
+  SiFacebook,
+  SiInstagram,
 } from "react-icons/si";
 
 import { Button } from "@/components/ui/button";
@@ -59,54 +68,222 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import TypingAnimation from "../components/TypingAnimation";
+import { Reveal } from "@/components/Reveal";
 import {
   ProjectInteractions,
   ProjectInteractionsRef,
 } from "@/components/ProjectInteractions";
 import { projects } from "@/lib/projects";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import { CountUp } from "@/components/CountUp";
+import { motion, useScroll, useSpring } from "framer-motion";
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-mono text-xs sm:text-[13px] uppercase tracking-[0.25em] text-primary">
+      {children}
+    </span>
+  );
+}
+
+function SectionHeading({
+  index,
+  eyebrow,
+  title,
+  kicker,
+}: {
+  index: string;
+  eyebrow: string;
+  title: string;
+  kicker?: string;
+}) {
+  return (
+    <Reveal className="mb-10 sm:mb-14">
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-xs text-muted-foreground">{index}</span>
+        <span className="h-px w-8 bg-border" />
+        <Eyebrow>{eyebrow}</Eyebrow>
+      </div>
+      <h2 className="font-display text-3xl sm:text-5xl font-semibold tracking-tight mt-4 text-balance">
+        {title}
+      </h2>
+      {kicker && (
+        <p className="text-muted-foreground mt-4 max-w-2xl leading-relaxed">
+          {kicker}
+        </p>
+      )}
+    </Reveal>
+  );
+}
+
+function LiveBadge() {
+  return (
+    <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-success">
+      <span className="relative flex h-1.5 w-1.5">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
+      </span>
+      Live
+    </span>
+  );
+}
+
+type IconComponent = React.ComponentType<{
+  className?: string;
+  "aria-hidden"?: boolean | "true" | "false";
+}>;
+type StackItem = { Icon: IconComponent; name: string; core?: boolean };
+const stackGroups: { label: string; items: StackItem[] }[] = [
+  {
+    label: "Languages",
+    items: [
+      { Icon: SiJavascript, name: "JavaScript" },
+      { Icon: SiTypescript, name: "TypeScript", core: true },
+    ],
+  },
+  {
+    label: "Frontend",
+    items: [
+      { Icon: SiReact, name: "React", core: true },
+      { Icon: SiNextdotjs, name: "Next.js", core: true },
+      { Icon: SiVite, name: "Vite" },
+      { Icon: SiTailwindcss, name: "Tailwind CSS", core: true },
+      { Icon: SiFramer, name: "Framer Motion" },
+      { Icon: SiSass, name: "SCSS" },
+      { Icon: SiBootstrap, name: "Bootstrap" },
+      { Icon: SiAntdesign, name: "Ant Design", core: true },
+      { Icon: SiChakraui, name: "Chakra UI" },
+      { Icon: SiMui, name: "Material UI" },
+      { Icon: SiFlutter, name: "Flutter", core: true },
+    ],
+  },
+  {
+    label: "Backend",
+    items: [
+      { Icon: SiNodedotjs, name: "Node.js", core: true },
+      { Icon: SiExpress, name: "Express.js", core: true },
+      { Icon: SiNestjs, name: "NestJS", core: true },
+      { Icon: SiLaravel, name: "Laravel" },
+      { Icon: SiSocketdotio, name: "Socket.io" },
+      { Icon: SiPrisma, name: "Prisma" },
+      { Icon: SiSequelize, name: "Sequelize" },
+    ],
+  },
+  {
+    label: "Database",
+    items: [
+      { Icon: SiPostgresql, name: "PostgreSQL", core: true },
+      { Icon: SiMongodb, name: "MongoDB", core: true },
+      { Icon: SiFirebase, name: "Firebase" },
+      { Icon: SiSupabase, name: "Supabase" },
+      { Icon: Database, name: "Convex" },
+    ],
+  },
+  {
+    label: "Tools & AI",
+    items: [
+      { Icon: SiGit, name: "Git" },
+      { Icon: SiGithub, name: "GitHub" },
+      { Icon: SiJest, name: "Jest" },
+      { Icon: SiVisualstudiocode, name: "VS Code" },
+      { Icon: SiPostman, name: "Postman" },
+      { Icon: SiFigma, name: "Figma" },
+      { Icon: SiCanva, name: "Canva" },
+      { Icon: SiSlack, name: "Slack" },
+      { Icon: SiNpm, name: "npm" },
+      { Icon: SiAnthropic, name: "Claude Code" },
+      { Icon: SiOpenai, name: "ChatGPT" },
+    ],
+  },
+];
+
+const navItems = [
+  { id: "about", label: "About" },
+  { id: "work", label: "Work" },
+  { id: "stack", label: "Stack" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
+];
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    const stored = localStorage.getItem("theme");
+    return stored ? stored === "dark" : true;
+  });
   const [activeSection, setActiveSection] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  const { scrollYProgress } = useScroll();
+  const scrollScaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.3,
+  });
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
+    try {
+      localStorage.setItem("theme", darkMode ? "dark" : "light");
+    } catch {
+    }
   }, [darkMode]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
-
-      const sections = ["skills", "projects", "experience", "contact-form"];
-      let current = "";
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 150) {
-            current = id;
-          }
-        }
-      }
-      setActiveSection(current);
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        setShowScrollTop(window.scrollY > 600);
+        raf = 0;
+      });
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
-  const [showAllSkills, setShowAllSkills] = useState(false);
+  useEffect(() => {
+    const els = navItems
+      .map((n) => document.getElementById(n.id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (els.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (lightboxImages.length === 0) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxImages([]);
+      else if (e.key === "ArrowLeft")
+        setLightboxIndex(
+          (i) => (i - 1 + lightboxImages.length) % lightboxImages.length
+        );
+      else if (e.key === "ArrowRight")
+        setLightboxIndex((i) => (i + 1) % lightboxImages.length);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightboxImages]);
 
   const projectRefs = useRef<
     Record<string, React.RefObject<ProjectInteractionsRef | null>>
@@ -117,458 +294,34 @@ export default function Home() {
         React.createRef<ProjectInteractionsRef>();
     }
   });
+
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("");
+  const [submitOk, setSubmitOk] = useState(false);
+
+  const liveCount = projects.filter((p) => p.link).length;
+  const featured = projects.filter((p) => p.featured);
+  const rest = projects.filter((p) => !p.featured);
+
+  const openLightbox = (images: string[], index: number) => {
+    setLightboxImages(images);
+    setLightboxIndex(index);
+  };
 
   const handleResumeRequest = () => {
     setContactForm({
       name: "",
       email: "",
       message:
-        "Hi Vincent! I'd like to request your full resume for a position I'm considering you for. Could you please send it over? Thank you!",
+        "Hi Vincent, I'd like to request your résumé for a role I have in mind. Could you send it over? Thanks.",
     });
-    document
-      .getElementById("contact-form")
-      ?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll(".fade-in");
-      elements.forEach((element) => {
-        if (isInViewport(element)) {
-          element.classList.add("active");
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    setShowAllSkills(false);
-
-    const timer = setTimeout(() => {
-      const elements = document.querySelectorAll(".fade-in");
-      elements.forEach((element) => {
-        if (isInViewport(element)) {
-          element.classList.add("active");
-        }
-      });
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    if (showAllSkills) {
-      const timer = setTimeout(() => {
-        const elements = document.querySelectorAll(".fade-in");
-        elements.forEach((element) => {
-          if (isInViewport(element)) {
-            element.classList.add("active");
-          }
-        });
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showAllSkills]);
-
-  const isInViewport = (element: Element) => {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.bottom > 0 &&
-      rect.right > 0 &&
-      rect.left < (window.innerWidth || document.documentElement.clientWidth) &&
-      rect.top < (window.innerHeight || document.documentElement.clientHeight)
-    );
-  };
-
-  const skillCategories = {
-    All: [
-      {
-        Icon: SiJavascript,
-        name: "JavaScript",
-        description: "Programming language for web development",
-      },
-      {
-        Icon: SiTypescript,
-        name: "TypeScript",
-        description: "Typed superset of JavaScript for scalable applications",
-      },
-      {
-        Icon: SiReact,
-        name: "React",
-        description: "JavaScript library for building user interfaces",
-      },
-      {
-        Icon: SiNextdotjs,
-        name: "Next.js",
-        description: "React framework for production",
-      },
-      {
-        Icon: SiVite,
-        name: "Vite",
-        description: "Next-generation frontend build tool",
-      },
-      {
-        Icon: SiNodedotjs,
-        name: "Node.js",
-        description: "JavaScript runtime for server-side development",
-      },
-      {
-        Icon: SiExpress,
-        name: "Express.js",
-        description: "Web application framework for Node.js",
-      },
-      {
-        Icon: SiNestjs,
-        name: "NestJS",
-        description: "Progressive Node.js framework for scalable server-side applications",
-      },
-      {
-        Icon: SiSocketdotio,
-        name: "Socket.io",
-        description: "Real-time bidirectional event-based communication",
-      },
-      {
-        Icon: SiPrisma,
-        name: "Prisma",
-        description: "Next-generation ORM for Node.js and TypeScript",
-      },
-      {
-        Icon: SiSequelize,
-        name: "Sequelize",
-        description: "Promise-based ORM for PostgreSQL and SQL databases",
-      },
-      {
-        Icon: SiPostgresql,
-        name: "PostgreSQL",
-        description: "Advanced open-source relational database",
-      },
-      {
-        Icon: SiMongodb,
-        name: "MongoDB",
-        description: "NoSQL database for modern applications",
-      },
-      {
-        Icon: SiFirebase,
-        name: "Firebase",
-        description: "Google's app development platform",
-      },
-      {
-        Icon: SiSupabase,
-        name: "Supabase",
-        description: "Open source Firebase alternative",
-      },
-      {
-        Icon: SiTailwindcss,
-        name: "Tailwind CSS",
-        description: "Utility-first CSS framework",
-      },
-      {
-        Icon: SiAntdesign,
-        name: "Ant Design",
-        description: "Enterprise-level UI design system for React",
-      },
-      {
-        Icon: SiChakraui,
-        name: "Chakra UI",
-        description: "Simple, modular component library for React",
-      },
-      {
-        Icon: SiMui,
-        name: "Material UI",
-        description: "React component library implementing Material Design",
-      },
-      {
-        Icon: SiSass,
-        name: "SCSS",
-        description: "CSS preprocessor with enhanced features",
-      },
-      {
-        Icon: SiBootstrap,
-        name: "Bootstrap",
-        description: "Front-end framework for responsive design",
-      },
-      {
-        Icon: SiFramer,
-        name: "Framer Motion",
-        description: "Production-ready animation library for React",
-      },
-      {
-        Icon: SiFlutter,
-        name: "Flutter",
-        description: "Cross-platform mobile app development framework",
-      },
-      {
-        Icon: SiJest,
-        name: "Jest",
-        description: "JavaScript testing framework for unit and integration tests",
-      },
-      {
-        Icon: SiGit,
-        name: "Git",
-        description: "Version control system for tracking code changes",
-      },
-      {
-        Icon: SiGithub,
-        name: "GitHub",
-        description:
-          "Code hosting platform for version control and collaboration",
-      },
-      {
-        Icon: SiVisualstudiocode,
-        name: "VS Code",
-        description: "Lightweight code editor with powerful features",
-      },
-      {
-        Icon: SiPostman,
-        name: "Postman",
-        description: "API development and testing platform",
-      },
-      {
-        Icon: SiFigma,
-        name: "Figma",
-        description: "Collaborative interface design tool",
-      },
-      {
-        Icon: SiCanva,
-        name: "Canva",
-        description: "Graphic design platform for visual content",
-      },
-      {
-        Icon: SiSlack,
-        name: "Slack",
-        description: "Team communication and collaboration platform",
-      },
-      {
-        Icon: SiNpm,
-        name: "npm",
-        description: "Package manager for JavaScript and Node.js",
-      },
-      {
-        Icon: SiAnthropic,
-        name: "Claude Code",
-        description: "AI-powered development environment and coding assistant",
-      },
-      {
-        Icon: SiOpenai,
-        name: "ChatGPT",
-        description: "AI assistant for code generation and problem solving",
-      },
-    ],
-    Frontend: [
-      {
-        Icon: SiReact,
-        name: "React",
-        description: "JavaScript library for building user interfaces",
-      },
-      {
-        Icon: SiNextdotjs,
-        name: "Next.js",
-        description: "React framework for production",
-      },
-      {
-        Icon: SiVite,
-        name: "Vite",
-        description: "Next-generation frontend build tool",
-      },
-      {
-        Icon: SiTailwindcss,
-        name: "Tailwind CSS",
-        description: "Utility-first CSS framework",
-      },
-      {
-        Icon: SiAntdesign,
-        name: "Ant Design",
-        description: "Enterprise-level UI design system for React",
-      },
-      {
-        Icon: SiChakraui,
-        name: "Chakra UI",
-        description: "Simple, modular component library for React",
-      },
-      {
-        Icon: SiMui,
-        name: "Material UI",
-        description: "React component library implementing Material Design",
-      },
-      {
-        Icon: SiSass,
-        name: "SCSS",
-        description: "CSS preprocessor with enhanced features",
-      },
-      {
-        Icon: SiBootstrap,
-        name: "Bootstrap",
-        description: "Front-end framework for responsive design",
-      },
-      {
-        Icon: SiFramer,
-        name: "Framer Motion",
-        description: "Production-ready animation library for React",
-      },
-      {
-        Icon: SiFlutter,
-        name: "Flutter",
-        description: "Cross-platform mobile app development framework",
-      },
-    ],
-    Backend: [
-      {
-        Icon: SiNodedotjs,
-        name: "Node.js",
-        description: "JavaScript runtime for server-side development",
-      },
-      {
-        Icon: SiExpress,
-        name: "Express.js",
-        description: "Web application framework for Node.js",
-      },
-      {
-        Icon: SiNestjs,
-        name: "NestJS",
-        description: "Progressive Node.js framework for scalable server-side applications",
-      },
-      {
-        Icon: SiSocketdotio,
-        name: "Socket.io",
-        description: "Real-time bidirectional event-based communication",
-      },
-      {
-        Icon: SiPrisma,
-        name: "Prisma",
-        description: "Next-generation ORM for Node.js and TypeScript",
-      },
-      {
-        Icon: SiSequelize,
-        name: "Sequelize",
-        description: "Promise-based ORM for PostgreSQL and SQL databases",
-      },
-    ],
-    Database: [
-      {
-        Icon: SiPostgresql,
-        name: "PostgreSQL",
-        description: "Advanced open-source relational database",
-      },
-      {
-        Icon: SiMongodb,
-        name: "MongoDB",
-        description: "NoSQL database for modern applications",
-      },
-      {
-        Icon: SiFirebase,
-        name: "Firebase",
-        description: "Google's app development platform",
-      },
-      {
-        Icon: SiSupabase,
-        name: "Supabase",
-        description: "Open source Firebase alternative",
-      },
-    ],
-    Tools: [
-      {
-        Icon: SiGit,
-        name: "Git",
-        description: "Version control system for tracking code changes",
-      },
-      {
-        Icon: SiGithub,
-        name: "GitHub",
-        description:
-          "Code hosting platform for version control and collaboration",
-      },
-      {
-        Icon: SiJest,
-        name: "Jest",
-        description: "JavaScript testing framework for unit and integration tests",
-      },
-      {
-        Icon: SiVisualstudiocode,
-        name: "VS Code",
-        description: "Lightweight code editor with powerful features",
-      },
-      {
-        Icon: SiPostman,
-        name: "Postman",
-        description: "API development and testing platform",
-      },
-      {
-        Icon: SiFigma,
-        name: "Figma",
-        description: "Collaborative interface design tool",
-      },
-      {
-        Icon: SiCanva,
-        name: "Canva",
-        description: "Graphic design platform for visual content",
-      },
-      {
-        Icon: SiSlack,
-        name: "Slack",
-        description: "Team communication and collaboration platform",
-      },
-      {
-        Icon: SiNpm,
-        name: "npm",
-        description: "Package manager for JavaScript and Node.js",
-      },
-      {
-        Icon: SiAnthropic,
-        name: "Claude Code",
-        description: "AI-powered development environment and coding assistant",
-      },
-      {
-        Icon: SiOpenai,
-        name: "ChatGPT",
-        description: "AI assistant for code generation and problem solving",
-      },
-    ],
-    Languages: [
-      {
-        Icon: SiJavascript,
-        name: "JavaScript",
-        description: "Programming language for web development",
-      },
-      {
-        Icon: SiTypescript,
-        name: "TypeScript",
-        description: "Typed superset of JavaScript for scalable applications",
-      },
-    ],
-  };
-
-  const allSkillsForCategory =
-    skillCategories[selectedCategory as keyof typeof skillCategories] ||
-    skillCategories.All;
-
-  const initialDisplayCount = 12;
-  const shouldPaginate =
-    selectedCategory === "All" &&
-    allSkillsForCategory.length > initialDisplayCount;
-
-  const filteredSkills =
-    shouldPaginate && !showAllSkills
-      ? allSkillsForCategory.slice(0, initialDisplayCount)
-      : allSkillsForCategory;
-
-  const hasMoreSkills =
-    shouldPaginate &&
-    !showAllSkills &&
-    allSkillsForCategory.length > initialDisplayCount;
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -578,29 +331,27 @@ export default function Home() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contactForm),
       });
-
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitStatus(
-          "Thank you! Your message has been sent successfully. I'll get back to you soon!"
-        );
+        setSubmitOk(true);
+        setSubmitStatus("Thanks. I'll get back to you soon.");
         setContactForm({ name: "", email: "", message: "" });
       } else {
+        setSubmitOk(false);
         setSubmitStatus(
           data.error ||
-            "Sorry, there was an error sending your message. Please try again."
+            "Something went wrong sending your message. Please try again."
         );
       }
     } catch (error) {
       console.error("Contact form error:", error);
+      setSubmitOk(false);
       setSubmitStatus(
-        "Sorry, there was an error sending your message. Please try contacting me directly at v.caayupan@gmail.com"
+        "Couldn't send your message. Email me directly at v.caayupan@gmail.com."
       );
     } finally {
       setIsSubmitting(false);
@@ -614,577 +365,825 @@ export default function Home() {
     setContactForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const renderProjectCard = (project: typeof projects[0], imageHeight: string) => {
+  const renderProjectCard = (
+    project: (typeof projects)[0],
+    imageHeight: string,
+    titleSize: string,
+    index: number
+  ) => {
     const interactionRef = projectRefs.current[project.slug];
-
-    const handleCardHover = () => {
-      if (interactionRef?.current) {
-        interactionRef.current.incrementView();
-      }
-    };
+    const images = project.images ?? (project.image ? [project.image] : []);
 
     return (
-      <Card
-        key={project.slug}
-        className="fade-in overflow-hidden hover-lift group"
-        onMouseEnter={handleCardHover}
-      >
-        <CardContent className="p-0 flex flex-col h-full">
-          <div className={`relative ${imageHeight} overflow-hidden bg-muted/50`}>
-            {project.images ? (
+      <Reveal key={project.slug} className="h-full" delay={(index % 3) * 0.08}>
+        <Card
+          className="hover-lift h-full overflow-hidden group bg-card/80 backdrop-blur-sm"
+          onMouseEnter={() => interactionRef?.current?.incrementView()}
+        >
+          <CardContent className="p-0 flex flex-col h-full">
+          <div className={`relative ${imageHeight} overflow-hidden bg-muted`}>
+            {images.length > 1 ? (
               <Carousel className="w-full h-full">
                 <CarouselContent>
-                  {project.images.map((image: string, index: number) => (
+                  {images.map((image, index) => (
                     <CarouselItem key={index}>
-                      <div
-                        className={`relative ${imageHeight} cursor-zoom-in`}
-                        onClick={() => { setLightboxImages(project.images!); setLightboxIndex(index); }}
+                      <button
+                        type="button"
+                        aria-label={`View ${project.name} screenshot ${index + 1}`}
+                        className="relative block w-full cursor-zoom-in"
+                        style={{ height: "100%" }}
+                        onClick={() => openLightbox(images, index)}
                       >
-                        <Image
-                          src={image}
-                          alt={`${project.name} - Image ${index + 1}`}
-                          fill
-                          className="object-cover transform group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
+                        <div className={`relative ${imageHeight}`}>
+                          <Image
+                            src={image}
+                            alt={`${project.name} — screenshot ${index + 1}`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      </button>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
                 <CarouselPrevious className="left-2" />
                 <CarouselNext className="right-2" />
               </Carousel>
-            ) : project.image ? (
-              <Image
-                src={project.image}
-                alt={project.name}
-                fill
-                onClick={() => { setLightboxImages([project.image!]); setLightboxIndex(0); }}
-                className="object-cover transform group-hover:scale-105 transition-transform duration-500 cursor-zoom-in"
-                onError={(e) => {
-                  const parent = e.currentTarget.parentElement;
-                  if (parent) {
-                    parent.innerHTML = `
-                      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                        <div class="text-center">
-                          <div class="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
-                            <span class="text-2xl text-primary">📁</span>
-                          </div>
-                          <p class="text-sm text-muted-foreground">Project Preview</p>
-                        </div>
-                      </div>
-                    `;
-                  }
-                }}
-              />
+            ) : images.length === 1 ? (
+              <button
+                type="button"
+                aria-label={`View ${project.name} screenshot`}
+                className="relative block h-full w-full cursor-zoom-in"
+                onClick={() => openLightbox(images, 0)}
+              >
+                <Image
+                  src={images[0]}
+                  alt={project.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </button>
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <span className="text-2xl text-primary">📁</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Project Preview</p>
-                </div>
-              </div>
-            )}
-            {(project.link || project.images) && (
-              <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-background/40">
-                {project.link && (
-                  <Button
-                    asChild
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
-                  >
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit Site
-                    </a>
-                  </Button>
-                )}
-                {project.images && (
-                  <Button
-                    variant="secondary"
-                    className="shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
-                    onClick={() => { setLightboxImages(project.images!); setLightboxIndex(0); }}
-                  >
-                    View Images
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-          <div className="p-6 text-center flex flex-col flex-1">
-            <h3 className="text-xl font-bold mb-2">{project.name}</h3>
-            <p className="text-sm text-muted-foreground mb-3 flex-1">
-              {project.description}
-            </p>
-            <div className="space-y-3">
-              <div className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full inline-block">
-                {project.tech}
-              </div>
-              <div className="flex justify-center">
-                <ProjectInteractions
-                  ref={interactionRef}
-                  projectSlug={project.slug}
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                <ImageOff
+                  className="h-10 w-10 text-muted-foreground/50"
+                  aria-hidden="true"
                 />
               </div>
+            )}
+
+            {project.link && (
+              <span className="absolute left-3 top-3 rounded-md bg-background/80 px-2 py-1 backdrop-blur-sm">
+                <LiveBadge />
+              </span>
+            )}
+            {images.length > 0 && (
+              <span className="absolute right-3 top-3 rounded-md bg-background/70 p-1.5 text-muted-foreground opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-1 flex-col gap-3 p-5 text-left sm:p-6">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              {project.domain}
+            </span>
+            <h3
+              className={`font-display ${titleSize} font-semibold leading-tight`}
+            >
+              {project.name}
+            </h3>
+            <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
+              {project.description}
+            </p>
+            <p className="font-mono text-xs leading-relaxed text-primary">
+              {project.tech}
+            </p>
+            <div className="flex items-center justify-between border-t border-border/60 pt-3">
+              <ProjectInteractions
+                ref={interactionRef}
+                projectSlug={project.slug}
+              />
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-arrow"
+                >
+                  Visit
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </Reveal>
     );
   };
 
   return (
     <div>
+      <motion.div
+        aria-hidden="true"
+        style={{ scaleX: scrollScaleX }}
+        className="fixed inset-x-0 top-0 z-[55] h-0.5 origin-left bg-primary"
+      />
       <AnimatedBackground darkMode={darkMode} />
-      <main className="relative z-10 text-foreground min-h-screen px-4 sm:px-10 md:px-20 lg:px-40">
-        <nav className="py-4 sm:py-6 flex justify-between items-center sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/20 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
-          <h1 className="text-lg sm:text-xl lg:text-2xl font-bebas-neue tracking-wider text-primary">
-            LINUS CAAYUPAN
-          </h1>
-          <div className="flex items-center space-x-1 sm:space-x-6">
-            <a href="#skills" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "skills" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
-              Skills
-            </a>
-            <a href="#projects" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "projects" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
-              Projects
-            </a>
-            <a href="#experience" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "experience" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
-              Experience
-            </a>
-            <a href="#contact-form" className={`nav-link hidden md:inline-block text-sm font-medium transition-colors ${activeSection === "contact-form" ? "active text-primary" : "text-muted-foreground hover:text-foreground"}`}>
-              Contact
-            </a>
-            <Button
-              onClick={handleResumeRequest}
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex transition-all duration-300 hover:scale-105 border-primary/30 hover:border-primary text-primary"
-            >
-              Request Resume
-            </Button>
+
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-center px-5 py-4 sm:px-8">
+          <nav className="flex items-center gap-1 sm:gap-6">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`nav-link hidden text-sm font-medium transition-colors md:inline-block ${
+                  activeSection === item.id
+                    ? "active text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="theme-toggle"
-              aria-label="Toggle theme"
+              aria-label={
+                darkMode ? "Switch to light mode" : "Switch to dark mode"
+              }
             >
-              <Sun className={`h-[1.2rem] w-[1.2rem] theme-toggle-icon ${darkMode ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"}`} />
-              <Moon className={`h-[1.2rem] w-[1.2rem] theme-toggle-icon ${darkMode ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"}`} />
+              <Sun
+                className={`h-[1.1rem] w-[1.1rem] theme-toggle-icon ${
+                  darkMode
+                    ? "rotate-90 scale-0 opacity-0"
+                    : "rotate-0 scale-100 opacity-100"
+                }`}
+              />
+              <Moon
+                className={`h-[1.1rem] w-[1.1rem] theme-toggle-icon ${
+                  darkMode
+                    ? "rotate-0 scale-100 opacity-100"
+                    : "-rotate-90 scale-0 opacity-0"
+                }`}
+              />
             </button>
-          </div>
-        </nav>
+          </nav>
+        </div>
+      </header>
 
-        <section className="text-center min-h-[calc(100vh-4rem)] flex flex-col justify-center max-w-3xl mx-auto">
-          <div className="space-y-6 mb-10">
-            <h2 className="fade-in text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
-              Vincent Linus
-              <span className="block text-primary">Caayupan</span>
-            </h2>
-            <h3 className="fade-in text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground tracking-wide">
-              Full-Stack Developer
-            </h3>
-            <div className="fade-in min-h-[3rem] sm:min-h-[3.5rem]">
-              <TypingAnimation />
+      <main id="top" className="relative z-10">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <section className="flex min-h-[calc(100vh-5rem)] flex-col justify-center py-16">
+            <Reveal delay={0}>
+              <div className="flex items-center gap-3">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                </span>
+                <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                  Available for work
+                </span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <h1 className="mt-6 font-display text-4xl font-bold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
+                Vincent Linus
+                <br />
+                <span className="text-primary">Caayupan</span>
+              </h1>
+            </Reveal>
+
+            <Reveal delay={0.16}>
+              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+                I&apos;m a full-stack developer from the Philippines. I build web
+                and mobile apps and take them to production. Recent ones have been
+                for a coffee shop, an aviation company, a fitness app, and a
+                government agency.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Button
+                  asChild
+                  size="lg"
+                  className="group h-12 px-6 text-base"
+                >
+                  <a href="#work">
+                    View work
+                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="h-12 px-6 text-base"
+                >
+                  <a href="#contact">Get in touch</a>
+                </Button>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.32}>
+              <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-sm text-muted-foreground">
+                <span>
+                  <span className="text-foreground">
+                    <CountUp value={projects.length} />
+                  </span>{" "}
+                  projects
+                </span>
+                <span className="hidden h-4 w-px bg-border sm:inline-block" />
+                <span>
+                  <span className="text-foreground">
+                    <CountUp value={liveCount} />
+                  </span>{" "}
+                  live
+                </span>
+                <span className="hidden h-4 w-px bg-border sm:inline-block" />
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />
+                  Philippines
+                </span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.4}>
+              <div className="mt-8 flex gap-2">
+                {[
+                  {
+                    href: "https://github.com/linusc17",
+                    label: "GitHub",
+                    Icon: SiGithub,
+                  },
+                  {
+                    href: "https://www.linkedin.com/in/linuscypn/",
+                    label: "LinkedIn",
+                    Icon: SiLinkedin,
+                  },
+                  {
+                    href: "https://www.facebook.com/linuscypn/",
+                    label: "Facebook",
+                    Icon: SiFacebook,
+                  },
+                  {
+                    href: "https://www.instagram.com/linuscypnn/",
+                    label: "Instagram",
+                    Icon: SiInstagram,
+                  },
+                ].map(({ href, label, Icon }) => (
+                  <Button
+                    key={label}
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    className="h-10 w-10 rounded-lg text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                  >
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      <Icon className="h-5 w-5" />
+                      <span className="sr-only">{label}</span>
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            </Reveal>
+          </section>
+
+          <section id="about" className="py-20 sm:py-28">
+            <SectionHeading index="01" eyebrow="About" title="Hi, I'm Linus" />
+            <div className="grid gap-10 md:grid-cols-[1.4fr_1fr]">
+              <Reveal className="space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                <p>
+                  I&apos;m a full-stack developer based in the Philippines. Right
+                  now I&apos;m a Software Engineer at{" "}
+                  <span className="text-foreground">Nerve Technologies</span>,
+                  working on MERN and Next.js apps, and I take on freelance
+                  projects on the side.
+                </p>
+                <p>
+                  Most of what I build is product and client work that ends up in
+                  production. I move around the stack depending on the job: React
+                  and Next.js on the front end, Node, Express, and NestJS on the
+                  back end, PostgreSQL or MongoDB for data, and Socket.io when
+                  something needs to be real-time.
+                </p>
+                <p>
+                  I&apos;m open to full-time roles and freelance work.
+                </p>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <div className="rounded-xl border border-border bg-card/60 p-6 backdrop-blur-sm">
+                  <dl className="space-y-4 font-mono text-sm">
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-muted-foreground">
+                        Currently
+                      </dt>
+                      <dd className="mt-1">Software Engineer @ Nerve</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-muted-foreground">
+                        Focus
+                      </dt>
+                      <dd className="mt-1">Full-stack web</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-muted-foreground">
+                        Education
+                      </dt>
+                      <dd className="mt-1">BS InfoTech, PUP</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-muted-foreground">
+                        Status
+                      </dt>
+                      <dd className="mt-1 inline-flex items-center gap-2 text-success">
+                        <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                        Open to work
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </Reveal>
             </div>
-          </div>
+          </section>
 
-          <div className="fade-in flex justify-center py-4 gap-4 sm:gap-6">
-            <Button variant="ghost" size="icon" asChild className="h-12 w-12 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <a href="https://www.facebook.com/linuscypn/" target="_blank" rel="noopener noreferrer">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </a>
-            </Button>
-            <Button variant="ghost" size="icon" asChild className="h-12 w-12 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <a href="https://www.instagram.com/linuscypnn/" target="_blank" rel="noopener noreferrer">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </a>
-            </Button>
-            <Button variant="ghost" size="icon" asChild className="h-12 w-12 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <a href="https://github.com/linusc17" target="_blank" rel="noopener noreferrer">
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </a>
-            </Button>
-            <Button variant="ghost" size="icon" asChild className="h-12 w-12 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <a href="https://www.linkedin.com/in/linuscypn/" target="_blank" rel="noopener noreferrer">
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-            </Button>
-          </div>
-        </section>
+          <section id="work" className="py-20 sm:py-28">
+            <SectionHeading
+              index="02"
+              eyebrow="Work"
+              title="What I've built"
+              kicker="Most of these are live. Click a screenshot to see it full size."
+            />
 
-        <section id="skills" className="text-center my-12 sm:mt-8 mb-32 section-gradient">
-          <h2 className="fade-in font-bebas-neue text-3xl sm:text-5xl md:text-6xl py-4 sm:py-8 md:py-12 text-primary tracking-wider">
-            TECH STACK
-          </h2>
-          <div className="fade-in flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-            {Object.keys(skillCategories).map((category) => (
-              <Button
-                key={category}
-                variant={
-                  selectedCategory === category ? "default" : "outline"
-                }
-                onClick={() => setSelectedCategory(category)}
-                className="text-sm transition-all duration-300 hover:scale-105"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-            {filteredSkills.map(({ Icon, name, description }) => (
-              <Card
-                key={name}
-                className="fade-in hover-lift skill-card relative overflow-hidden group"
-              >
-                <CardContent className="p-4 sm:p-6 flex flex-col items-center justify-center relative z-10 h-full min-h-[200px]">
-                  <Icon className="text-5xl sm:text-6xl text-primary mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300" />
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2 text-center">
-                    {name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground text-center line-clamp-3">
-                    {description}
-                  </p>
-                  <div className="absolute inset-0 shimmer-effect opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {hasMoreSkills && (
-            <div className="fade-in flex justify-center mt-8">
-              <Button
-                onClick={() => setShowAllSkills(true)}
-                variant="outline"
-                size="lg"
-                className="px-8 py-3 text-base transition-all duration-300 hover:scale-105 hover:shadow-lg"
-              >
-                Show More ({allSkillsForCategory.length - initialDisplayCount}{" "}
-                more)
-              </Button>
+            <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+              {featured.map((project, i) =>
+                renderProjectCard(
+                  project,
+                  "h-64 sm:h-80",
+                  "text-2xl sm:text-3xl",
+                  i
+                )
+              )}
             </div>
-          )}
 
-          {showAllSkills && selectedCategory === "All" && (
-            <div className="fade-in flex justify-center mt-6">
-              <Button
-                onClick={() => setShowAllSkills(false)}
-                variant="ghost"
-                size="sm"
-                className="text-sm transition-all duration-300 hover:scale-105"
-              >
-                Show Less
-              </Button>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.map((project, i) =>
+                renderProjectCard(project, "h-52", "text-xl", i)
+              )}
             </div>
-          )}
-        </section>
+          </section>
 
-        <section id="projects" className="text-center my-12 sm:mt-8 mb-32 section-gradient">
-          <h2 className="fade-in font-bebas-neue text-3xl sm:text-5xl md:text-6xl py-4 sm:py-8 md:py-12 text-primary tracking-wider">
-            PERSONAL PROJECTS
-          </h2>
+          <section id="stack" className="py-20 sm:py-28">
+            <SectionHeading
+              index="03"
+              eyebrow="Stack"
+              title="Tools I work with"
+              kicker="The ones in cyan are what I use most."
+            />
+            <div className="space-y-8">
+              {stackGroups.map((group) => (
+                <div
+                  key={group.label}
+                  className="grid grid-cols-1 gap-3 sm:grid-cols-[9rem_1fr] sm:gap-6"
+                >
+                  <Reveal className="pt-1.5 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                    {group.label}
+                  </Reveal>
+                  <div className="flex flex-wrap gap-2.5">
+                    {group.items.map(({ Icon, name, core }, i) => (
+                      <Reveal key={name} delay={i * 0.035} y={10}>
+                        <span className={`chip ${core ? "chip-core" : ""}`}>
+                          <Icon className="h-4 w-4" aria-hidden="true" />
+                          {name}
+                        </span>
+                      </Reveal>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {projects.slice(0, 2).map((project) =>
-              renderProjectCard(project, "h-80 sm:h-[28rem]")
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {projects.slice(2).map((project) =>
-              renderProjectCard(project, "h-72")
-            )}
-          </div>
-        </section>
-
-        <section id="experience" className="text-center my-12 sm:mt-8 mb-32 section-gradient">
-          <h2 className="fade-in font-bebas-neue text-3xl sm:text-5xl md:text-6xl py-4 sm:py-8 md:py-12 text-primary tracking-wider">
-            EXPERIENCE
-          </h2>
-          <div className="max-w-4xl mx-auto">
+          <section id="experience" className="py-20 sm:py-28">
+            <SectionHeading
+              index="04"
+              eyebrow="Background"
+              title="Experience"
+            />
             <div className="relative">
-              <div className="absolute left-6 top-0 w-0.5 h-full timeline-line"></div>
-
-              <div className="space-y-8">
-                <div className="fade-in relative">
-                  <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot z-10"></div>
-                    <Card className="hover-lift">
-                      <CardContent className="p-6 text-left">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                          <div>
-                            <h3 className="text-xl font-bold mb-1">Junior Software Engineer</h3>
-                            <h4 className="text-base text-primary font-medium">Nerve Technologies</h4>
-                          </div>
-                          <div className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
-                            Oct 2024 - Present
-                          </div>
+              <div className="absolute left-[7px] top-2 h-full w-0.5 timeline-line" />
+              <div className="space-y-10">
+                <Reveal className="relative pl-10">
+                  <span className="absolute left-0 top-2 timeline-dot" />
+                  <Card className="hover-lift bg-card/80 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left">
+                      <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <h3 className="font-display text-xl font-semibold">
+                            Software Engineer
+                          </h3>
+                          <h4 className="text-primary">Nerve Technologies</h4>
                         </div>
-                        <div className="text-sm space-y-2 text-muted-foreground">
-                          {[
-                            "Delivered scalable MERN applications with responsive React UIs using SCSS/Tailwind and Ant Design",
-                            "Developed secure JWT-based REST APIs with Express.js microservices architecture",
-                            "Managed databases with Prisma, Sequelize, and Mongoose across PostgreSQL and MongoDB",
-                            "Added real-time features with Socket.io across multiple business domains",
-                          ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                              <span className="leading-relaxed">{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
+                        <span className="w-fit font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          Oct 2024 — Present
+                        </span>
+                      </div>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        {[
+                          "Delivered scalable MERN applications with responsive React UIs using SCSS/Tailwind and Ant Design",
+                          "Built secure JWT-based REST APIs with an Express.js microservices architecture",
+                          "Managed databases with Prisma, Sequelize, and Mongoose across PostgreSQL and MongoDB",
+                          "Added real-time features with Socket.io across multiple business domains",
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                            <span className="leading-relaxed">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </Reveal>
 
-                <div className="fade-in relative">
-                  <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot z-10"></div>
-                    <Card className="hover-lift">
-                      <CardContent className="p-6 text-left">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                          <div>
-                            <h3 className="text-xl font-bold mb-1">Freelance Developer</h3>
-                            <h4 className="text-base text-primary font-medium">Contract Work</h4>
-                          </div>
-                          
+                <Reveal className="relative pl-10">
+                  <span className="absolute left-0 top-2 timeline-dot" />
+                  <Card className="hover-lift bg-card/80 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left">
+                      <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <h3 className="font-display text-xl font-semibold">
+                            Freelance Developer
+                          </h3>
+                          <h4 className="text-primary">Contract work</h4>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">
-                          Select contract engagements alongside full-time role:
-                        </p>
-                        <p className="text-xs italic text-muted-foreground mb-4">
-                          Client names disclosed in resume or upon request.
-                        </p>
+                        <span className="w-fit font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          2024 — 2025
+                        </span>
+                      </div>
+                      <p className="mb-1 text-sm text-muted-foreground">
+                        Select contract engagements alongside my full-time role:
+                      </p>
+                      <p className="mb-4 text-xs italic text-muted-foreground">
+                        Client names disclosed in my résumé or on request.
+                      </p>
 
-                        <div className="border-l-2 border-primary/20 pl-4 mb-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Government Agency Client (Frontend Developer)</h5>
-                            <span className="text-xs text-muted-foreground">Nov 2025</span>
+                      {[
+                        {
+                          title:
+                            "Government Agency Client — Frontend Developer",
+                          date: "Nov 2025",
+                          body: "Built a government HRIS using React, Vite, Tailwind CSS, Material UI, and FullCalendar. Integrated REST APIs with Axios for employee management and scheduling.",
+                        },
+                        {
+                          title:
+                            "Game Studio Client — Lead Full-Stack Developer",
+                          date: "Sep 2025",
+                          body: "Led development of a game using Next.js, Supabase, Framer Motion, and PixiJS, with Zustand and XState for complex state management.",
+                        },
+                        {
+                          title: "Digital Agency Client — Full-Stack Developer",
+                          date: "Oct 2024",
+                          body: "Built a contract-management app with Next.js and Chakra UI, and enhanced a cinema-equipment e-commerce platform with Firebase-based inventory management.",
+                        },
+                      ].map((eng) => (
+                        <div
+                          key={eng.title}
+                          className="mb-4 border-l-2 border-primary/20 pl-4 last:mb-0"
+                        >
+                          <div className="mb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                            <h5 className="text-sm font-semibold text-foreground">
+                              {eng.title}
+                            </h5>
+                            <span className="font-mono text-xs text-muted-foreground">
+                              {eng.date}
+                            </span>
                           </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Built a government HRIS (Human Resource Information System) using React, Vite, Tailwind CSS, Material UI, and FullCalendar. Integrated RESTful APIs with Axios for employee management and scheduling.
+                          <p className="text-sm leading-relaxed text-muted-foreground">
+                            {eng.body}
                           </p>
                         </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </Reveal>
 
-                        <div className="border-l-2 border-primary/20 pl-4 mb-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Game Studio Client (Lead Full Stack Developer)</h5>
-                            <span className="text-xs text-muted-foreground">Sep 2025</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Led development of a game using Next.js, Supabase, Framer Motion, and PixiJS with Zustand and XState for complex state management.
-                          </p>
+                <Reveal className="relative pl-10">
+                  <span className="absolute left-0 top-2 timeline-dot-muted" />
+                  <Card className="hover-lift bg-card/80 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left">
+                      <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <h3 className="font-display text-xl font-semibold">
+                            Web Developer Intern · Team Leader
+                          </h3>
+                          <h4 className="text-primary">
+                            Unified Internship Program
+                          </h4>
                         </div>
+                        <span className="w-fit font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          Mar 2024 — Jul 2024
+                        </span>
+                      </div>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        {[
+                          "Led a small development team building a travel-agency booking system",
+                          "Used WordPress and WPTravelEngine for booking and reservation workflows",
+                          "Gained hands-on experience in project leadership and team coordination",
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                            <span className="leading-relaxed">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </Reveal>
 
-                        <div className="border-l-2 border-primary/20 pl-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-                            <h5 className="text-sm font-semibold text-foreground">Digital Agency Client (Full Stack Developer)</h5>
-                            <span className="text-xs text-muted-foreground">Oct 2024</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Built a contract management app with Next.js and Chakra UI. Enhanced a cinema-equipment e-commerce platform with Firebase-based inventory management.
-                          </p>
+                <Reveal className="relative pl-10">
+                  <span className="absolute left-0 top-2 timeline-dot-muted" />
+                  <Card className="hover-lift bg-card/80 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left">
+                      <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <h3 className="font-display text-xl font-semibold">
+                            BS Information Technology
+                          </h3>
+                          <h4 className="text-primary">
+                            Polytechnic University of the Philippines
+                          </h4>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-
-                <div className="fade-in relative">
-                  <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot-muted z-10"></div>
-                    <Card className="hover-lift">
-                      <CardContent className="p-6 text-left">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                          <div>
-                            <h3 className="text-xl font-bold mb-1">Web Developer Intern (Team Leader)</h3>
-                            <h4 className="text-base text-primary font-medium">Unified Internship Program</h4>
-                          </div>
-                          <div className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
-                            Mar 2024 - Jul 2024
-                          </div>
-                        </div>
-                        <div className="text-sm space-y-2 text-muted-foreground">
-                          {[
-                            "Led a small development team in building a travel agency booking system",
-                            "Used WordPress and WPTravelEngine for backend booking and reservation workflows",
-                            "Gained experience in project leadership and team coordination",
-                          ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                              <span className="leading-relaxed">{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-
-                <div className="fade-in relative">
-                  <div className="ml-16 relative">
-                    <div className="absolute -left-10 top-6 transform -translate-x-1/2 timeline-dot-muted z-10"></div>
-                    <Card className="hover-lift">
-                      <CardContent className="p-6 text-left">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                          <div>
-                            <h3 className="text-xl font-bold mb-1">BS Information Technology</h3>
-                            <h4 className="text-base text-primary font-medium">Polytechnic University of the Philippines</h4>
-                          </div>
-                          <div className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
-                            2021 - 2024
-                          </div>
-                        </div>
-                        <div className="text-sm space-y-2 text-muted-foreground">
-                          {[
-                            "Consistent Dean's/President's Lister",
-                            "Developed strong foundation in programming and software development",
-                          ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                              <span className="leading-relaxed">{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
+                        <span className="w-fit font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          2021 — 2024
+                        </span>
+                      </div>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        {[
+                          "Consistent Dean's / President's Lister",
+                          "Built a strong foundation in programming and software development",
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                            <span className="leading-relaxed">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </Reveal>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section id="contact-form" className="text-center my-12 sm:mt-8 mb-20">
-          <h2 className="fade-in font-bebas-neue text-3xl sm:text-5xl md:text-6xl py-4 sm:py-8 text-primary tracking-wider">
-            GET IN TOUCH
-          </h2>
-          <div className="max-w-2xl mx-auto">
-            <div className="fade-in flex flex-col justify-center items-center space-y-4 sm:space-y-6 py-4 lg:flex-row lg:space-y-0 lg:space-x-12 mb-8">
-              <div className="flex items-center">
-                <Phone className="text-xl sm:text-2xl text-primary mr-2" />
-                <span className="text-lg font-semibold">
-                  (+63) 927 022 0661
-                </span>
-              </div>
-              <div className="flex items-center">
-                <Mail className="text-xl sm:text-2xl text-primary mr-2" />
-                <span className="text-lg font-semibold">
-                  v.caayupan@gmail.com
-                </span>
-              </div>
-            </div>
+          <section id="contact" className="py-20 sm:py-28">
+            <SectionHeading
+              index="05"
+              eyebrow="Contact"
+              title="Get in touch"
+              kicker="Got a role or a project in mind? Send a message, or email me directly."
+            />
 
-            <Card className="fade-in hover-lift">
-              <CardContent className="p-8">
-                <form onSubmit={handleContactSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium mb-2"
-                      >
-                        Name *
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        required
-                        value={contactForm.name}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
-                        placeholder="Your full name"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium mb-2"
-                      >
-                        Email *
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        value={contactForm.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
-                        placeholder="your.email@example.com"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium mb-2"
+            <div className="grid items-stretch gap-6 md:grid-cols-2">
+              <Reveal className="h-full">
+                <div className="flex h-full flex-col rounded-xl border border-border bg-card/60 p-6 backdrop-blur-sm sm:p-8">
+                  <div className="space-y-6">
+                    <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-success">
+                      <span className="relative flex h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                      </span>
+                      Available for work
+                    </span>
+
+                    <a
+                      href="mailto:v.caayupan@gmail.com"
+                      className="group flex items-center gap-4"
                     >
-                      Message *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      required
-                      value={contactForm.message}
-                      onChange={handleInputChange}
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 resize-none"
-                      placeholder="Tell me about your project or just say hello!"
-                    />
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Mail className="h-5 w-5" />
+                      </span>
+                      <span>
+                        <span className="block font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          Email
+                        </span>
+                        <span className="text-sm font-medium group-hover:text-primary">
+                          v.caayupan@gmail.com
+                        </span>
+                      </span>
+                    </a>
+
+                    <a
+                      href="tel:+639270220661"
+                      className="group flex items-center gap-4"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Phone className="h-5 w-5" />
+                      </span>
+                      <span>
+                        <span className="block font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          Phone
+                        </span>
+                        <span className="text-sm font-medium group-hover:text-primary">
+                          (+63) 927 022 0661
+                        </span>
+                      </span>
+                    </a>
+
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <MapPin className="h-5 w-5" />
+                      </span>
+                      <span>
+                        <span className="block font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                          Location
+                        </span>
+                        <span className="text-sm font-medium">Philippines</span>
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-center">
+
+                  <div className="mt-auto pt-8">
+                    <div className="mb-4 flex items-center gap-1">
+                      {[
+                        {
+                          href: "https://github.com/linusc17",
+                          label: "GitHub",
+                          Icon: SiGithub,
+                        },
+                        {
+                          href: "https://www.linkedin.com/in/linuscypn/",
+                          label: "LinkedIn",
+                          Icon: SiLinkedin,
+                        },
+                        {
+                          href: "https://www.facebook.com/linuscypn/",
+                          label: "Facebook",
+                          Icon: SiFacebook,
+                        },
+                        {
+                          href: "https://www.instagram.com/linuscypnn/",
+                          label: "Instagram",
+                          Icon: SiInstagram,
+                        },
+                      ].map(({ href, label, Icon }) => (
+                        <Button
+                          key={label}
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                          className="h-10 w-10 rounded-lg text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                        >
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Icon className="h-5 w-5" />
+                            <span className="sr-only">{label}</span>
+                          </a>
+                        </Button>
+                      ))}
+                    </div>
                     <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="px-8 py-3 text-lg transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                      onClick={handleResumeRequest}
+                      variant="outline"
+                      className="w-full justify-center"
                     >
-                      {isSubmitting ? "Sending..." : "Send Message"}
+                      Request my résumé
                     </Button>
                   </div>
-                  {submitStatus && (
-                    <div
-                      className={`text-center text-sm mt-4 ${
-                        submitStatus.includes("Thank you")
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {submitStatus}
-                    </div>
-                  )}
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+                </div>
+              </Reveal>
 
-        <footer className="border-t border-border/20 py-8 -mx-4 sm:-mx-10 md:-mx-20 lg:-mx-40 px-4 sm:px-10 md:px-20 lg:px-40">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Vincent Linus Caayupan
-            </p>
-            <div className="flex items-center gap-4">
-              <a href="https://github.com/linusc17" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Github className="h-4 w-4" />
-              </a>
-              <a href="https://www.linkedin.com/in/linuscypn/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Linkedin className="h-4 w-4" />
-              </a>
-              <a href="mailto:v.caayupan@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="h-4 w-4" />
-              </a>
+              <Reveal delay={0.1} className="h-full">
+                <Card className="h-full bg-card/80 backdrop-blur-sm">
+                  <CardContent className="flex h-full flex-col p-6 sm:p-8">
+                    <form onSubmit={handleContactSubmit} className="space-y-5">
+                      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                        <div>
+                          <label
+                            htmlFor="name"
+                            className="mb-2 block text-sm font-medium"
+                          >
+                            Name <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            required
+                            autoComplete="name"
+                            value={contactForm.name}
+                            onChange={handleInputChange}
+                            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                            placeholder="Your name"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="email"
+                            className="mb-2 block text-sm font-medium"
+                          >
+                            Email <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            required
+                            autoComplete="email"
+                            value={contactForm.email}
+                            onChange={handleInputChange}
+                            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                            placeholder="you@example.com"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="message"
+                          className="mb-2 block text-sm font-medium"
+                        >
+                          Message <span className="text-primary">*</span>
+                        </label>
+                        <textarea
+                          id="message"
+                          name="message"
+                          required
+                          rows={5}
+                          value={contactForm.message}
+                          onChange={handleInputChange}
+                          className="w-full resize-none rounded-lg border border-input bg-background px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                          placeholder="Tell me about the role or project."
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        size="lg"
+                        className="w-full"
+                      >
+                        {isSubmitting ? "Sending…" : "Send message"}
+                      </Button>
+                      {submitStatus && (
+                        <p
+                          role="status"
+                          aria-live="polite"
+                          className={`text-center text-sm ${
+                            submitOk ? "text-success" : "text-destructive"
+                          }`}
+                        >
+                          {submitStatus}
+                        </p>
+                      )}
+                    </form>
+                  </CardContent>
+                </Card>
+              </Reveal>
             </div>
-          </div>
-        </footer>
+          </section>
+        </div>
       </main>
+
+      <footer className="relative z-10 border-t border-border/40">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 sm:flex-row sm:px-8">
+          <p className="font-mono text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Vincent Linus Caayupan
+          </p>
+          <div className="flex items-center gap-3">
+            {[
+              {
+                href: "https://github.com/linusc17",
+                label: "GitHub",
+                Icon: SiGithub,
+              },
+              {
+                href: "https://www.linkedin.com/in/linuscypn/",
+                label: "LinkedIn",
+                Icon: SiLinkedin,
+              },
+              { href: "mailto:v.caayupan@gmail.com", label: "Email", Icon: Mail },
+            ].map(({ href, label, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Icon className="h-4 w-4" />
+                <span className="sr-only">{label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </footer>
 
       <button
         className={`scroll-top-btn ${showScrollTop ? "visible" : ""}`}
@@ -1196,39 +1195,55 @@ export default function Home() {
 
       {lightboxImages.length > 0 && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm cursor-pointer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Project screenshot viewer"
+          className="fixed inset-0 z-[60] flex cursor-pointer items-center justify-center bg-black/80 backdrop-blur-sm"
           onClick={() => setLightboxImages([])}
         >
+          <button
+            className="absolute right-4 top-4 z-10 rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            onClick={() => setLightboxImages([])}
+            aria-label="Close viewer"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
           {lightboxImages.length > 1 && (
             <button
-              className="absolute left-4 sm:left-8 z-10 p-3 text-white/70 hover:text-white transition-colors"
+              className="absolute left-3 z-10 rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white sm:left-6"
               onClick={(e) => {
                 e.stopPropagation();
-                setLightboxIndex((i) => (i - 1 + lightboxImages.length) % lightboxImages.length);
+                setLightboxIndex(
+                  (i) =>
+                    (i - 1 + lightboxImages.length) % lightboxImages.length
+                );
               }}
+              aria-label="Previous image"
             >
-              <ChevronUp className="h-8 w-8 -rotate-90" />
+              <ChevronLeft className="h-7 w-7" />
             </button>
           )}
 
           <Image
             src={lightboxImages[lightboxIndex]}
-            alt="Project screenshot"
+            alt={`Project screenshot ${lightboxIndex + 1} of ${lightboxImages.length}`}
             width={900}
             height={1600}
-            className="max-h-[85vh] w-auto object-contain"
+            className="max-h-[85vh] w-auto cursor-default object-contain"
             onClick={(e) => e.stopPropagation()}
           />
 
           {lightboxImages.length > 1 && (
             <button
-              className="absolute right-4 sm:right-8 z-10 p-3 text-white/70 hover:text-white transition-colors"
+              className="absolute right-3 z-10 rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white sm:right-6"
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((i) => (i + 1) % lightboxImages.length);
               }}
+              aria-label="Next image"
             >
-              <ChevronUp className="h-8 w-8 rotate-90" />
+              <ChevronRight className="h-7 w-7" />
             </button>
           )}
 
@@ -1237,8 +1252,14 @@ export default function Home() {
               {lightboxImages.map((_, i) => (
                 <button
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-colors ${i === lightboxIndex ? "bg-white" : "bg-white/30"}`}
-                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                  className={`h-2 rounded-full transition-all ${
+                    i === lightboxIndex ? "w-6 bg-white" : "w-2 bg-white/40"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex(i);
+                  }}
+                  aria-label={`Go to image ${i + 1}`}
                 />
               ))}
             </div>

@@ -41,6 +41,7 @@ export const ProjectInteractions = forwardRef<
   const fetchStats = useCallback(async () => {
     try {
       const response = await fetch("/api/projects/stats");
+      if (!response.ok) return;
       const data = await response.json();
 
       if (data.success && data.stats[projectSlug]) {
