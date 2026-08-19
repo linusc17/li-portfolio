@@ -53,6 +53,9 @@ import {
   SiChakraui,
   SiMui,
   SiJest,
+  SiVitest,
+  SiMysql,
+  SiReactquery,
   SiFlutter,
   SiLinkedin,
   SiFacebook,
@@ -149,6 +152,7 @@ const stackGroups: { label: string; items: StackItem[] }[] = [
       { Icon: SiVite, name: "Vite" },
       { Icon: SiTailwindcss, name: "Tailwind CSS", core: true },
       { Icon: SiFramer, name: "Framer Motion" },
+      { Icon: SiReactquery, name: "TanStack Query" },
       { Icon: SiSass, name: "SCSS" },
       { Icon: SiBootstrap, name: "Bootstrap" },
       { Icon: SiAntdesign, name: "Ant Design", core: true },
@@ -173,6 +177,7 @@ const stackGroups: { label: string; items: StackItem[] }[] = [
     label: "Database",
     items: [
       { Icon: SiPostgresql, name: "PostgreSQL", core: true },
+      { Icon: SiMysql, name: "MySQL", core: true },
       { Icon: SiMongodb, name: "MongoDB", core: true },
       { Icon: SiFirebase, name: "Firebase" },
       { Icon: SiSupabase, name: "Supabase" },
@@ -185,6 +190,7 @@ const stackGroups: { label: string; items: StackItem[] }[] = [
       { Icon: SiGit, name: "Git" },
       { Icon: SiGithub, name: "GitHub" },
       { Icon: SiJest, name: "Jest" },
+      { Icon: SiVitest, name: "Vitest" },
       { Icon: SiVisualstudiocode, name: "VS Code" },
       { Icon: SiPostman, name: "Postman" },
       { Icon: SiFigma, name: "Figma" },
@@ -562,9 +568,9 @@ export default function Home() {
             <Reveal delay={0.16}>
               <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                 I&apos;m a full-stack developer from the Philippines. I build web
-                and mobile apps and take them to production. Recent ones have been
-                for a coffee shop, an aviation company, a fitness app, and a
-                government agency.
+                and mobile apps and take them to production. Recent work spans
+                hospital and accounting systems, government HRIS platforms, and
+                e-commerce for real businesses.
               </p>
             </Reveal>
 
@@ -663,15 +669,17 @@ export default function Home() {
                   I&apos;m a full-stack developer based in the Philippines. Right
                   now I&apos;m a Software Engineer at{" "}
                   <span className="text-foreground">Nerve Technologies</span>,
-                  working on MERN and Next.js apps, and I take on freelance
-                  projects on the side.
+                  and I take on contract work on the side — healthcare and
+                  accounting platforms, a pre-launch multiplayer game, and
+                  agency e-commerce.
                 </p>
                 <p>
                   Most of what I build is product and client work that ends up in
                   production. I move around the stack depending on the job: React
-                  and Next.js on the front end, Node, Express, and NestJS on the
-                  back end, PostgreSQL or MongoDB for data, and Socket.io when
-                  something needs to be real-time.
+                  and Next.js on the front end; Node, Express, NestJS, and
+                  Laravel on the back end; PostgreSQL, MySQL, or MongoDB for
+                  data; and Socket.io or Convex when something needs to be
+                  real-time.
                 </p>
                 <p>
                   I&apos;m open to full-time roles and freelance work.
@@ -796,10 +804,9 @@ export default function Home() {
                       </div>
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         {[
-                          "Delivered scalable MERN applications with responsive React UIs using SCSS/Tailwind and Ant Design",
-                          "Built secure JWT-based REST APIs with an Express.js microservices architecture",
-                          "Managed databases with Prisma, Sequelize, and Mongoose across PostgreSQL and MongoDB",
-                          "Added real-time features with Socket.io across multiple business domains",
+                          "Top-3 contributor on a multi-tenant franchise marketing SaaS — 43-route Express/MongoDB API, React + Ant Design frontend, Socket.io realtime",
+                          "Top-3 contributor on a multi-tenant inventory and POS SaaS (Express, Sequelize, MySQL, React 19)",
+                          "Built features across a hospital facility-management system of 7 microservices behind an API gateway (Express, NestJS, PostgreSQL)",
                         ].map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
@@ -823,7 +830,7 @@ export default function Home() {
                           <h4 className="text-primary">Contract work</h4>
                         </div>
                         <span className="w-fit font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                          2024 — 2025
+                          2024 — Present
                         </span>
                       </div>
                       <p className="mb-1 text-sm text-muted-foreground">
@@ -836,20 +843,26 @@ export default function Home() {
                       {[
                         {
                           title:
-                            "Government Agency Client — Frontend Developer",
-                          date: "Nov 2025",
-                          body: "Built a government HRIS using React, Vite, Tailwind CSS, Material UI, and FullCalendar. Integrated REST APIs with Axios for employee management and scheduling.",
+                            "Software Development Client — Full-Stack Developer",
+                          date: "Jan 2026",
+                          body: "#1 contributor on a double-entry project-accounting platform now in production (NestJS, TypeORM, PostgreSQL, Next.js), and building a hospital information system across an 84-model clinical and billing domain (Fastify, tRPC, Prisma, React 19).",
                         },
                         {
                           title:
                             "Game Studio Client — Lead Full-Stack Developer",
-                          date: "Sep 2025",
-                          body: "Led development of a game using Next.js, Supabase, Framer Motion, and PixiJS, with Zustand and XState for complex state management.",
+                          date: "Mar 2026",
+                          body: "Core engineer on a pre-launch browser-based multiplayer social RPG (Next.js 16, React 19, Convex): real-time chat with presence and DMs, a deterministic typing-combat engine, and a server-validated daily vendor economy.",
+                        },
+                        {
+                          title:
+                            "Government HRIS Client — Full-Stack Developer",
+                          date: "Oct 2025",
+                          body: "Built payroll, timekeeping, and employee-records features for HRIS platforms serving two national government agencies — React 19 + Vite frontends over Laravel 12 microservices — and was primary developer of a public online recruitment portal.",
                         },
                         {
                           title: "Digital Agency Client — Full-Stack Developer",
                           date: "Oct 2024",
-                          body: "Built a contract-management app with Next.js and Chakra UI, and enhanced a cinema-equipment e-commerce platform with Firebase-based inventory management.",
+                          body: "Built a contract e-signing and invoicing SaaS used by film production crews, shipped GCash/BPI payment checkout for a fine-art print store, and enhanced a cinema-equipment e-commerce platform (Next.js, Firebase).",
                         },
                       ].map((eng) => (
                         <div

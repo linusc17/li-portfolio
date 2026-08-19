@@ -12,6 +12,17 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "jais-kitchenette",
+    name: "Jai's Kitchenette",
+    description:
+      "E-commerce platform for a real bakery in Imus, Cavite: storefront with cart, GCash/COD checkout, senior-citizen discounts, and reviews, plus a full admin back office for products, orders, inventory, vouchers, and PDF/Excel reports.",
+    tech: "Next.js 15 • React 19 • TypeScript • Express • MongoDB",
+    domain: "E-commerce / F&B",
+    featured: true,
+    image: "/jai-home.png",
+    link: "https://jai-kitchenette.vercel.app/",
+  },
+  {
     slug: "ledger",
     name: "Ledger",
     description:
@@ -35,7 +46,6 @@ export const projects: Project[] = [
       "Multiplayer Tic Tac Toe with AI opponent, real-time online play, chat, and competitive leaderboards.",
     tech: "Next.js • TypeScript • Socket.io • Express.js • MongoDB",
     domain: "Real-time / Games",
-    featured: true,
     image: "/tictactoe.png",
     link: "https://tic-tac-toe-weblc.vercel.app/",
   },
