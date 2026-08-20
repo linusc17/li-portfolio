@@ -568,7 +568,7 @@ export default function Home() {
             <Reveal delay={0.16}>
               <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                 I&apos;m a full-stack developer from the Philippines. I build web
-                and mobile apps and take them to production. Recent work spans
+                applications and take them to production. Recent work spans
                 hospital and accounting systems, government HRIS platforms, and
                 e-commerce for real businesses.
               </p>
@@ -669,9 +669,8 @@ export default function Home() {
                   I&apos;m a full-stack developer based in the Philippines. Right
                   now I&apos;m a Software Engineer at{" "}
                   <span className="text-foreground">Nerve Technologies</span>,
-                  and I take on contract work on the side — healthcare and
-                  accounting platforms, a pre-launch multiplayer game, and
-                  agency e-commerce.
+                  and I take on contract work on the side, building web
+                  platforms for clients across a range of industries.
                 </p>
                 <p>
                   Most of what I build is product and client work that ends up in

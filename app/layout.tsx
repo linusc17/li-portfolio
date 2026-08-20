@@ -19,7 +19,7 @@ const display = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Vincent Linus Caayupan | Full-Stack Developer",
   description:
-    "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter. Recent work spans coffee, aviation, fitness, and government.",
+    "Full-stack developer from the Philippines building web applications with React, Next.js, NestJS, and Laravel. Recent work spans healthcare, accounting, government HRIS, and e-commerce.",
   keywords: [
     "Vincent Linus Caayupan",
     "Full-Stack Developer",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Vincent Linus Caayupan | Full-Stack Developer",
     description:
-      "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter.",
+      "Full-stack developer from the Philippines building web applications with React, Next.js, NestJS, and Laravel.",
     url: "https://linuscypn.dev",
     siteName: "Vincent Linus Caayupan Portfolio",
     locale: "en_US",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vincent Linus Caayupan | Full-Stack Developer",
     description:
-      "Full-stack developer from the Philippines building web and mobile apps with MERN, Next.js, and Flutter.",
+      "Full-stack developer from the Philippines building web applications with React, Next.js, NestJS, and Laravel.",
   },
   robots: {
     index: true,
